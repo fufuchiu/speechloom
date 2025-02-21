@@ -20,3 +20,11 @@ def real(value, minimum: float | None = None, maximum: float | None = None) -> f
     if minimum is not None and value < minimum or maximum is not None and value > maximum:
         raise ValueError('number is outside allowed bounds')
     return float(value)
+
+
+def vector(values) -> np.ndarray:
+    """Copy a finite one-dimensional numeric array."""
+    x = np.asarray(values, dtype=np.float64)
+    if x.ndim != 1 or not np.isfinite(x).all():
+        raise ValueError('expected a finite vector')
+    return x.copy()
