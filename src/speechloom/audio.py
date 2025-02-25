@@ -38,3 +38,17 @@ def pcm_decode(payload: bytes) -> np.ndarray:
 def audio_to_base64(samples) -> str:
     """Serialize PCM16 as standard ASCII base64."""
     return base64.b64encode(pcm_encode(samples)).decode('ascii')
+
+
+def audio_from_base64(payload: str, max_bytes: int = 3200000) -> np.ndarray:
+    """Decode strict base64 under a bounded payload limit."""
+    limit = integer(max_bytes, 1)
+    if not isinstance(payload, str) or len(payload) > 4 * ((limit + 2) // 3):
+        raise ValueError('invalid or oversized base64 audio')
+    try:
+        raw = base64.b64decode(payload, validate=True)
+    except (ValueError, binascii.Error) as exc:
+        raise ValueError('invalid base64 audio') from exc
+    if len(raw) > limit:
+        raise ValueError('decoded audio exceeds limit')
+    return pcm_decode(raw)
