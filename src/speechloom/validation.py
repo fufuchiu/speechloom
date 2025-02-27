@@ -28,3 +28,12 @@ def vector(values) -> np.ndarray:
     if x.ndim != 1 or not np.isfinite(x).all():
         raise ValueError('expected a finite vector')
     return x.copy()
+
+
+def token_ids(values, vocabulary_size: int) -> list[int]:
+    """Validate a sequence of nonnegative vocabulary IDs."""
+    size = integer(vocabulary_size, 1)
+    result = [integer(v, 0, 'token') for v in values]
+    if any(v >= size for v in result):
+        raise ValueError('token ID outside vocabulary')
+    return result
