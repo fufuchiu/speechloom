@@ -92,3 +92,8 @@ def crossfade(left, right, overlap: int) -> np.ndarray:
     weight = np.arange(1, count + 1) / (count + 1)
     mixed = a[-count:] * (1 - weight) + c[:count] * weight
     return np.concatenate((a[:-count], mixed, c[count:]))
+
+
+def samples_to_seconds(count: int, sample_rate: int = 16000) -> float:
+    """Convert an exact sample count to seconds."""
+    return integer(count) / integer(sample_rate, 1)
