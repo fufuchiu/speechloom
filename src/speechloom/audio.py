@@ -21,3 +21,8 @@ class AudioFormat:
             raise ValueError('only mono audio is supported')
         if self.sample_width != 2 or isinstance(self.sample_width, bool):
             raise ValueError('only PCM16 is supported')
+
+
+def pcm_encode(samples) -> bytes:
+    """Encode clipped mono samples as little-endian PCM16."""
+    return np.clip(np.rint(vector(samples) * 32768), -32768, 32767).astype('<i2').tobytes()
