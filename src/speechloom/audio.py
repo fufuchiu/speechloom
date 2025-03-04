@@ -59,3 +59,17 @@ def chunk_audio(samples, chunk_size: int = 320) -> list[np.ndarray]:
     size = integer(chunk_size, 1)
     x = vector(samples)
     return [x[start : start + size].copy() for start in range(0, len(x), size)]
+
+
+def pad_audio(waveforms, multiple: int = 1) -> tuple[np.ndarray, np.ndarray]:
+    """Batch nonempty waveforms and return exact unpadded lengths."""
+    multiple = integer(multiple, 1)
+    items = [vector(x) for x in waveforms]
+    if not items or any(not len(x) for x in items):
+        raise ValueError('audio batch must contain nonempty waveforms')
+    lengths = np.array([len(x) for x in items], dtype=np.int64)
+    width = ((int(lengths.max()) + multiple - 1) // multiple) * multiple
+    padded = np.zeros((len(items), width))
+    for i, x in enumerate(items):
+        padded[i, : len(x)] = x
+    return padded, lengths
