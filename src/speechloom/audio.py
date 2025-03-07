@@ -33,3 +33,8 @@ def pcm_decode(payload: bytes) -> np.ndarray:
     if len(payload) % 2:
         raise ValueError('truncated PCM16 sample')
     return np.frombuffer(payload, dtype='<i2').astype(float) / 32768
+
+
+def audio_to_base64(samples) -> str:
+    """Serialize PCM16 as standard ASCII base64."""
+    return base64.b64encode(pcm_encode(samples)).decode('ascii')
