@@ -26,3 +26,10 @@ class AudioFormat:
 def pcm_encode(samples) -> bytes:
     """Encode clipped mono samples as little-endian PCM16."""
     return np.clip(np.rint(vector(samples) * 32768), -32768, 32767).astype('<i2').tobytes()
+
+
+def pcm_decode(payload: bytes) -> np.ndarray:
+    """Reject truncated samples and decode PCM16."""
+    if len(payload) % 2:
+        raise ValueError('truncated PCM16 sample')
+    return np.frombuffer(payload, dtype='<i2').astype(float) / 32768
