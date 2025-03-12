@@ -97,3 +97,8 @@ def crossfade(left, right, overlap: int) -> np.ndarray:
 def samples_to_seconds(count: int, sample_rate: int = 16000) -> float:
     """Convert an exact sample count to seconds."""
     return integer(count) / integer(sample_rate, 1)
+
+
+def seconds_to_samples(seconds: float, sample_rate: int = 16000) -> int:
+    """Round time to the nearest sample, with half samples rounded upward."""
+    return int(np.floor(real(seconds, 0) * integer(sample_rate, 1) + 0.5))
