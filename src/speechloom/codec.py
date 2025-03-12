@@ -12,3 +12,12 @@ def mulaw_encode(samples, bins: int = 256) -> np.ndarray:
     mu = bins - 1
     companded = np.sign(x) * np.log1p(mu * np.abs(x)) / np.log1p(mu)
     return np.floor((companded + 1) * 0.5 * mu + 0.5).astype(np.int64)
+
+
+def mulaw_decode(codes, bins: int = 256) -> np.ndarray:
+    """Decode scalar mu-law IDs to approximate normalized amplitudes."""
+    bins = integer(bins, 2)
+    ids = np.array(token_ids(codes, bins))
+    mu = bins - 1
+    value = 2 * ids / mu - 1
+    return np.sign(value) * np.expm1(np.abs(value) * np.log1p(mu)) / mu
