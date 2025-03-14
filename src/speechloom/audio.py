@@ -52,3 +52,10 @@ def audio_from_base64(payload: str, max_bytes: int = 3200000) -> np.ndarray:
     if len(raw) > limit:
         raise ValueError('decoded audio exceeds limit')
     return pcm_decode(raw)
+
+
+def chunk_audio(samples, chunk_size: int = 320) -> list[np.ndarray]:
+    """Split without dropping or padding the final chunk."""
+    size = integer(chunk_size, 1)
+    x = vector(samples)
+    return [x[start : start + size].copy() for start in range(0, len(x), size)]
