@@ -73,3 +73,9 @@ def pad_audio(waveforms, multiple: int = 1) -> tuple[np.ndarray, np.ndarray]:
     for i, x in enumerate(items):
         padded[i, : len(x)] = x
     return padded, lengths
+
+
+def rms_energy(samples) -> float:
+    """Compute RMS energy with zero for an empty waveform."""
+    x = vector(samples)
+    return float(np.sqrt(np.mean(x * x))) if len(x) else 0.0
