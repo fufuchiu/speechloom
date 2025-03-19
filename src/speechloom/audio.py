@@ -79,3 +79,16 @@ def rms_energy(samples) -> float:
     """Compute RMS energy with zero for an empty waveform."""
     x = vector(samples)
     return float(np.sqrt(np.mean(x * x))) if len(x) else 0.0
+
+
+def crossfade(left, right, overlap: int) -> np.ndarray:
+    """Linear overlap-add with ramps that sum to one."""
+    a, c = vector(left), vector(right)
+    count = integer(overlap)
+    if count > min(len(a), len(c)):
+        raise ValueError('overlap exceeds a chunk length')
+    if not count:
+        return np.concatenate((a, c))
+    weight = np.arange(1, count + 1) / (count + 1)
+    mixed = a[-count:] * (1 - weight) + c[:count] * weight
+    return np.concatenate((a[:-count], mixed, c[count:]))
