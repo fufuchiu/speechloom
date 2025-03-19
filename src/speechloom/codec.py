@@ -39,3 +39,24 @@ def nearest_codes(vectors, codebook) -> np.ndarray:
     # Batch distances avoid allocating an N*K*D tensor.
     distances = np.maximum((x * x).sum(1, keepdims=True) + (c * c).sum(1) - 2 * x @ c.T, 0)
     return distances.argmin(1)
+
+
+def fit_codebook(vectors, size: int = 16, iterations: int = 20, seed: int = 0) -> np.ndarray:
+    """Fit deterministic Lloyd k-means, preserving empty centroids."""
+    x = np.asarray(vectors, dtype=float)
+    size, iterations = integer(size, 1), integer(iterations, 1)
+    if x.ndim != 2 or len(x) < size or not x.shape[1] or not np.isfinite(x).all():
+        raise ValueError('need at least size finite training vectors')
+    rng = np.random.default_rng(seed)
+    centers = x[rng.choice(len(x), size, replace=False)].copy()
+    for _ in range(iterations):
+        ids = nearest_codes(x, centers)
+        next_centers = centers.copy()
+        for i in range(size):
+            group = x[ids == i]
+            if len(group):
+                next_centers[i] = group.mean(0)
+        if np.allclose(centers, next_centers, rtol=0, atol=1e-12):
+            break
+        centers = next_centers
+    return centers
