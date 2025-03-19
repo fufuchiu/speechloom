@@ -96,3 +96,13 @@ def residual_decode(codes, codebooks) -> np.ndarray:
             result = np.zeros((len(ids), width))
         result += book[checked]
     return result
+
+
+def codebook_perplexity(codes, size: int) -> float:
+    """Exponentiated assignment entropy; empty observations have perplexity zero."""
+    ids = token_ids(codes, integer(size, 1))
+    if not ids:
+        return 0.0
+    counts = np.bincount(ids, minlength=size)
+    p = counts[counts > 0] / len(ids)
+    return float(np.exp(-np.sum(p * np.log(p))))
