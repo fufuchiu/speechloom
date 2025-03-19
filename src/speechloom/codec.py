@@ -75,3 +75,24 @@ def residual_encode(vectors, codebooks) -> np.ndarray:
         columns.append(ids)
         residual -= book[ids]
     return np.stack(columns, axis=1)
+
+
+def residual_decode(codes, codebooks) -> np.ndarray:
+    """Sum residual codebook vectors after checking every ID and dimension."""
+    books = [np.asarray(book, dtype=float) for book in codebooks]
+    ids = np.asarray(codes)
+    if not books or ids.ndim != 2 or ids.shape[1] != len(books):
+        raise ValueError('codebook count and code columns differ')
+    width = None
+    result = None
+    for column, book in enumerate(books):
+        if book.ndim != 2 or not all(book.shape) or not np.isfinite(book).all():
+            raise ValueError('invalid codebook')
+        if width is not None and book.shape[1] != width:
+            raise ValueError('codebook vector dimensions differ')
+        width = book.shape[1]
+        checked = token_ids(ids[:, column], len(book))
+        if result is None:
+            result = np.zeros((len(ids), width))
+        result += book[checked]
+    return result
