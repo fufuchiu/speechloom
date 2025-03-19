@@ -60,3 +60,18 @@ def fit_codebook(vectors, size: int = 16, iterations: int = 20, seed: int = 0) -
             break
         centers = next_centers
     return centers
+
+
+def residual_encode(vectors, codebooks) -> np.ndarray:
+    """Quantize each residual in turn; shape (frames, codebooks)."""
+    residual = np.asarray(vectors, dtype=float).copy()
+    books = list(codebooks)
+    if not books:
+        raise ValueError('at least one codebook is required')
+    columns = []
+    for book in books:
+        book = np.asarray(book, dtype=float)
+        ids = nearest_codes(residual, book)
+        columns.append(ids)
+        residual -= book[ids]
+    return np.stack(columns, axis=1)
