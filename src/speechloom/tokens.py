@@ -29,3 +29,11 @@ class TokenLayout:
     @property
     def vocabulary_size(self) -> int:
         return self.audio_offset + self.audio_bins * self.codebooks
+
+
+def encode_text(text: str, boundaries: bool = False) -> list[int]:
+    """Encode UTF-8 bytes at offset four; optionally surround by BOS/EOS."""
+    if not isinstance(text, str):
+        raise ValueError('text must be a string')
+    ids = [byte + 4 for byte in text.encode('utf-8')]
+    return [1, *ids, 2] if boundaries else ids
