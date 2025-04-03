@@ -83,3 +83,19 @@ def pack_response(text: str, audio_codes, layout: TokenLayout = TokenLayout()) -
         *encode_audio(audio_codes, layout),
         layout.eos,
     ]
+
+
+def unpack_response(ids, layout: TokenLayout = TokenLayout()) -> tuple[str, list[int]]:
+    """Validate response grammar before recovering text and codec IDs."""
+    values = token_ids(ids, layout.vocabulary_size)
+    if (
+        len(values) < 3
+        or values[0] != layout.bos
+        or values[-1] != layout.eos
+        or values.count(layout.separator) != 1
+    ):
+        raise ValueError('invalid response boundaries or separator')
+    split = values.index(layout.separator)
+    if any(value < 4 or value >= 260 for value in values[1:split]):
+        raise ValueError('invalid token in text region')
+    return decode_text(values[1:split]), decode_audio(values[split + 1 : -1], layout)
