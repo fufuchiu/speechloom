@@ -66,3 +66,9 @@ def decode_audio(ids, layout: TokenLayout = TokenLayout(), codebook: int = 0) ->
     if any(not offset <= value < offset + layout.audio_bins for value in values):
         raise ValueError('token belongs to another modality or codebook')
     return [value - offset for value in values]
+
+
+def modality(token: int, layout: TokenLayout = TokenLayout()) -> str:
+    """Classify a vocabulary ID as special, text or audio."""
+    value = token_ids([token], layout.vocabulary_size)[0]
+    return 'special' if value < 4 else 'text' if value < layout.audio_offset else 'audio'
