@@ -14,3 +14,9 @@ def padding_mask(lengths, max_length: int | None = None) -> np.ndarray:
     if max(values) > width:
         raise ValueError('length exceeds padded width')
     return np.arange(width)[None, :] >= np.array(values)[:, None]
+
+
+def causal_mask(length: int) -> np.ndarray:
+    """True strictly above the diagonal, preventing access to future tokens."""
+    length = integer(length, 1)
+    return np.triu(np.ones((length, length), dtype=bool), k=1)
