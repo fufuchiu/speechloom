@@ -20,3 +20,28 @@ def causal_mask(length: int) -> np.ndarray:
     """True strictly above the diagonal, preventing access to future tokens."""
     length = integer(length, 1)
     return np.triu(np.ones((length, length), dtype=bool), k=1)
+
+
+def shift_targets(
+    sequences, vocabulary_size: int, pad_id: int = 0, ignore_index: int = -100
+) -> dict:
+    """Produce decoder inputs and one-step-shifted labels without supervising pad."""
+    pad_id = token_ids([pad_id], vocabulary_size)[0]
+    if isinstance(ignore_index, bool) or not isinstance(ignore_index, int) or ignore_index >= 0:
+        raise ValueError('ignore_index must be a negative integer')
+    values = [token_ids(sequence, vocabulary_size) for sequence in sequences]
+    if not values or any(len(sequence) < 2 or pad_id in sequence for sequence in values):
+        raise ValueError('each unpadded sequence needs at least two non-pad tokens')
+    lengths = np.array([len(sequence) - 1 for sequence in values], dtype=np.int64)
+    width = int(lengths.max())
+    inputs = np.full((len(values), width), pad_id, dtype=np.int64)
+    labels = np.full_like(inputs, ignore_index)
+    for i, sequence in enumerate(values):
+        inputs[i, : lengths[i]] = sequence[:-1]
+        labels[i, : lengths[i]] = sequence[1:]
+    return {
+        'input_ids': inputs,
+        'labels': labels,
+        'lengths': lengths,
+        'padding_mask': padding_mask(lengths, width),
+    }
