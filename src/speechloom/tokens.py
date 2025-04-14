@@ -45,3 +45,12 @@ def decode_text(ids, errors: str = 'strict') -> str:
         raise ValueError('unknown UTF-8 error policy')
     values = token_ids(ids, 260)
     return bytes(value - 4 for value in values if value >= 4).decode('utf-8', errors=errors)
+
+
+def encode_audio(codes, layout: TokenLayout = TokenLayout(), codebook: int = 0) -> list[int]:
+    """Map codec IDs into their disjoint vocabulary range."""
+    book = integer(codebook)
+    if book >= layout.codebooks:
+        raise ValueError('codebook outside layout')
+    offset = layout.audio_offset + book * layout.audio_bins
+    return [offset + code for code in token_ids(codes, layout.audio_bins)]
