@@ -54,3 +54,15 @@ def encode_audio(codes, layout: TokenLayout = TokenLayout(), codebook: int = 0) 
         raise ValueError('codebook outside layout')
     offset = layout.audio_offset + book * layout.audio_bins
     return [offset + code for code in token_ids(codes, layout.audio_bins)]
+
+
+def decode_audio(ids, layout: TokenLayout = TokenLayout(), codebook: int = 0) -> list[int]:
+    """Invert audio-token mapping, rejecting tokens from a different modality."""
+    book = integer(codebook)
+    if book >= layout.codebooks:
+        raise ValueError('codebook outside layout')
+    offset = layout.audio_offset + book * layout.audio_bins
+    values = token_ids(ids, layout.vocabulary_size)
+    if any(not offset <= value < offset + layout.audio_bins for value in values):
+        raise ValueError('token belongs to another modality or codebook')
+    return [value - offset for value in values]
