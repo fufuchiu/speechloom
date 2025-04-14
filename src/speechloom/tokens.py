@@ -37,3 +37,11 @@ def encode_text(text: str, boundaries: bool = False) -> list[int]:
         raise ValueError('text must be a string')
     ids = [byte + 4 for byte in text.encode('utf-8')]
     return [1, *ids, 2] if boundaries else ids
+
+
+def decode_text(ids, errors: str = 'strict') -> str:
+    """Decode byte tokens; reject audio IDs and malformed UTF-8 by default."""
+    if errors not in ('strict', 'replace', 'ignore'):
+        raise ValueError('unknown UTF-8 error policy')
+    values = token_ids(ids, 260)
+    return bytes(value - 4 for value in values if value >= 4).decode('utf-8', errors=errors)
