@@ -72,3 +72,14 @@ def modality(token: int, layout: TokenLayout = TokenLayout()) -> str:
     """Classify a vocabulary ID as special, text or audio."""
     value = token_ids([token], layout.vocabulary_size)[0]
     return 'special' if value < 4 else 'text' if value < layout.audio_offset else 'audio'
+
+
+def pack_response(text: str, audio_codes, layout: TokenLayout = TokenLayout()) -> list[int]:
+    """Pack BOS, text, separator, audio tokens and EOS for teacher forcing."""
+    return [
+        layout.bos,
+        *encode_text(text),
+        layout.separator,
+        *encode_audio(audio_codes, layout),
+        layout.eos,
+    ]
