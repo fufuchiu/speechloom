@@ -59,3 +59,21 @@ def loss_weights(
     if not np.issubdtype(x.dtype, np.integer):
         raise ValueError('labels must be integers')
     return np.where(x < 0, 0, np.where(x >= offset, audio_weight, text_weight)).astype(float)
+
+
+def token_budget_batches(lengths, budget: int) -> list[list[int]]:
+    """Stable batches bounded by padded length times batch size."""
+    budget = integer(budget, 1)
+    values = [integer(n, 1) for n in lengths]
+    if any(n > budget for n in values):
+        raise ValueError('a sequence exceeds the token budget')
+    result, current, maximum = [], [], 0
+    for index, length in enumerate(values):
+        if current and max(maximum, length) * (len(current) + 1) > budget:
+            result.append(current)
+            current, maximum = [], 0
+        current.append(index)
+        maximum = max(maximum, length)
+    if current:
+        result.append(current)
+    return result
