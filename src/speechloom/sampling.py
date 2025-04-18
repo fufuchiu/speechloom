@@ -17,3 +17,14 @@ def checked_logits(logits) -> np.ndarray:
     ):
         raise ValueError('invalid logits or no available outcomes')
     return x.copy()
+
+
+def softmax(logits, temperature: float = 1.0) -> np.ndarray:
+    """Stable softmax with finite positive temperature."""
+    temperature = real(temperature, 0)
+    if temperature == 0:
+        raise ValueError('temperature must be positive')
+    x = checked_logits(logits)
+    x = (x - x.max()) / temperature
+    weights = np.exp(x)
+    return weights / weights.sum()
