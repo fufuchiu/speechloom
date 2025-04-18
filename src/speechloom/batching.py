@@ -77,3 +77,16 @@ def token_budget_batches(lengths, budget: int) -> list[list[int]]:
     if current:
         result.append(current)
     return result
+
+
+def length_buckets(lengths, boundaries=(128, 256, 512, 1024)) -> dict[int, list[int]]:
+    """Group original indices into inclusive length bounds and an overflow bucket."""
+    bounds = [integer(v, 1) for v in boundaries]
+    if bounds != sorted(set(bounds)):
+        raise ValueError('boundaries must be strictly increasing')
+    result = {}
+    for i, length in enumerate(lengths):
+        length = integer(length, 1)
+        bucket = next((j for j, bound in enumerate(bounds) if length <= bound), len(bounds))
+        result.setdefault(bucket, []).append(i)
+    return result
