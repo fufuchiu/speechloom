@@ -61,3 +61,12 @@ def repetition_penalty(logits, previous, penalty: float = 1.0) -> np.ndarray:
     for token in set(token_ids(previous, len(x))):
         x[token] = x[token] / penalty if x[token] > 0 else x[token] * penalty
     return x
+
+
+def sample_token(logits, temperature: float = 1, seed: int | None = None) -> int:
+    """Sample with a local RNG, or choose the lowest-ID argmax at zero temperature."""
+    temperature = real(temperature, 0)
+    x = checked_logits(logits)
+    if temperature == 0:
+        return int(x.argmax())
+    return int(np.random.default_rng(seed).choice(len(x), p=softmax(x, temperature)))
