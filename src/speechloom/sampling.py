@@ -28,3 +28,14 @@ def softmax(logits, temperature: float = 1.0) -> np.ndarray:
     x = (x - x.max()) / temperature
     weights = np.exp(x)
     return weights / weights.sum()
+
+
+def top_k(logits, k: int) -> np.ndarray:
+    """Keep k largest logits, resolving equal logits by lower token ID."""
+    x = checked_logits(logits)
+    k = integer(k, 1)
+    if k > len(x):
+        raise ValueError('k exceeds vocabulary size')
+    order = np.argsort(-x, kind='stable')
+    x[order[k:]] = -np.inf
+    return x
