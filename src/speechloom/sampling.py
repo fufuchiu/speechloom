@@ -70,3 +70,12 @@ def sample_token(logits, temperature: float = 1, seed: int | None = None) -> int
     if temperature == 0:
         return int(x.argmax())
     return int(np.random.default_rng(seed).choice(len(x), p=softmax(x, temperature)))
+
+
+def allowed_tokens(logits, allowed) -> np.ndarray:
+    """Mask every token outside an explicit, nonempty allowlist."""
+    x = checked_logits(logits)
+    ids = token_ids(allowed, len(x))
+    result = np.full_like(x, -np.inf)
+    result[ids] = x[ids]
+    return checked_logits(result)
