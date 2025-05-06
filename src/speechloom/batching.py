@@ -45,3 +45,17 @@ def shift_targets(
         'lengths': lengths,
         'padding_mask': padding_mask(lengths, width),
     }
+
+
+def loss_weights(
+    labels, audio_offset: int = 260, text_weight: float = 1, audio_weight: float = 1
+) -> np.ndarray:
+    """Construct per-token modality weights with zero at ignored labels."""
+    from .validation import real
+
+    offset = integer(audio_offset, 4)
+    text_weight, audio_weight = real(text_weight, 0), real(audio_weight, 0)
+    x = np.asarray(labels)
+    if not np.issubdtype(x.dtype, np.integer):
+        raise ValueError('labels must be integers')
+    return np.where(x < 0, 0, np.where(x >= offset, audio_weight, text_weight)).astype(float)
