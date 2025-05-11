@@ -81,3 +81,16 @@ def response_example(
     """Build a supervised audio-input / multimodal-output example."""
     Turn('user', audio=audio_path)
     return {'audio': audio_path, 'target_ids': pack_response(text, codes, layout)}
+
+
+def truncate_turns(turns, max_turns: int) -> list[Turn]:
+    """Drop complete oldest user/assistant pairs while preserving the system turn."""
+    max_turns = integer(max_turns, 1)
+    values = validate_turns(turns)
+    prefix = values[:1] if values[0].role == 'system' else []
+    body = values[len(prefix) :]
+    while len(prefix) + len(body) > max_turns and len(body) > 2:
+        body = body[2:]
+    if len(prefix) + len(body) > max_turns:
+        raise ValueError('turn budget cannot preserve a complete final exchange')
+    return validate_turns(prefix + body)
