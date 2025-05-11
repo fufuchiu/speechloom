@@ -64,3 +64,12 @@ def load_conversations(path: str | Path) -> list[list[Turn]]:
         except (ValueError, TypeError) as exc:
             raise ValueError(f'line {number}: {exc}') from exc
     return result
+
+
+def save_conversations(path: str | Path, conversations) -> None:
+    """Validate all conversations before writing Unicode JSONL."""
+    rows = [{'turns': [asdict(turn) for turn in validate_turns(turns)]} for turns in conversations]
+    Path(path).write_text(
+        ''.join(json.dumps(row, ensure_ascii=False, sort_keys=True) + '\n' for row in rows),
+        encoding='utf-8',
+    )
