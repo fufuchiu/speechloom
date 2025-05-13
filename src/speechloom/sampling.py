@@ -39,3 +39,16 @@ def top_k(logits, k: int) -> np.ndarray:
     order = np.argsort(-x, kind='stable')
     x[order[k:]] = -np.inf
     return x
+
+
+def top_p(logits, p: float = 0.9) -> np.ndarray:
+    """Retain the smallest sorted prefix whose cumulative mass reaches p."""
+    x = checked_logits(logits)
+    p = real(p, 0, 1)
+    if p == 0:
+        raise ValueError('p must be greater than zero')
+    order = np.argsort(-x, kind='stable')
+    cumulative = np.cumsum(softmax(x)[order])
+    count = min(len(x), int(np.searchsorted(cumulative, p, side='left')) + 1)
+    x[order[count:]] = -np.inf
+    return x
