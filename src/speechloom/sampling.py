@@ -52,3 +52,12 @@ def top_p(logits, p: float = 0.9) -> np.ndarray:
     count = min(len(x), int(np.searchsorted(cumulative, p, side='left')) + 1)
     x[order[count:]] = -np.inf
     return x
+
+
+def repetition_penalty(logits, previous, penalty: float = 1.0) -> np.ndarray:
+    """Reduce positive repeated logits and increase the magnitude of negative ones."""
+    x = checked_logits(logits)
+    penalty = real(penalty, 1)
+    for token in set(token_ids(previous, len(x))):
+        x[token] = x[token] / penalty if x[token] > 0 else x[token] * penalty
+    return x
