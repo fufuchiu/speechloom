@@ -25,3 +25,22 @@ class Turn:
             raise ValueError('system turns cannot carry audio')
         if not self.text and self.audio is None:
             raise ValueError('turn must contain text or audio')
+
+
+def validate_turns(turns) -> list[Turn]:
+    """Check optional leading system turn followed by alternating user/assistant."""
+    values = list(turns)
+    if not values:
+        raise ValueError('conversation cannot be empty')
+    expected = 'user'
+    for index, turn in enumerate(values):
+        if not isinstance(turn, Turn):
+            raise ValueError('conversation entries must be Turn instances')
+        if index == 0 and turn.role == 'system':
+            continue
+        if turn.role != expected:
+            raise ValueError(f'expected {expected} turn')
+        expected = 'assistant' if expected == 'user' else 'user'
+    if values[-1].role == 'system':
+        raise ValueError('system-only conversation is incomplete')
+    return values
