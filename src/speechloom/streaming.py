@@ -84,3 +84,34 @@ class UTF8Stream:
         text = self._decoder.decode(b'', final=True)
         self.closed = True
         return text
+
+
+class AudioRing:
+    """A bounded waveform buffer; callers explicitly choose drop-oldest behavior."""
+
+    def __init__(self, capacity: int = 16000, drop_oldest: bool = False):
+        self.capacity = integer(capacity, 1)
+        self.drop_oldest = drop_oldest
+        self._samples = np.empty(0)
+        self.dropped = 0
+
+    def append(self, samples) -> None:
+        x = vector(samples)
+        excess = max(0, len(self._samples) + len(x) - self.capacity)
+        if excess and not self.drop_oldest:
+            raise BufferError('audio buffer capacity exceeded')
+        combined = np.concatenate((self._samples, x))
+        self._samples = combined[-self.capacity :]
+        self.dropped += excess
+
+    def take(self, count: int) -> np.ndarray:
+        count = integer(count)
+        if count > len(self._samples):
+            raise ValueError('not enough buffered samples')
+        result = self._samples[:count].copy()
+        self._samples = self._samples[count:]
+        return result
+
+    @property
+    def size(self) -> int:
+        return len(self._samples)
