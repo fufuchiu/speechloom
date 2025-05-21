@@ -44,3 +44,23 @@ def validate_turns(turns) -> list[Turn]:
     if values[-1].role == 'system':
         raise ValueError('system-only conversation is incomplete')
     return values
+
+
+def load_conversations(path: str | Path) -> list[list[Turn]]:
+    """Read JSONL with strict per-turn fields and line-numbered diagnostics."""
+    result = []
+    for number, line in enumerate(Path(path).read_text(encoding='utf-8').splitlines(), 1):
+        if not line.strip():
+            continue
+        try:
+            row = json.loads(line)
+            if (
+                not isinstance(row, dict)
+                or set(row) != {'turns'}
+                or not isinstance(row['turns'], list)
+            ):
+                raise ValueError('record must contain only a turns array')
+            result.append(validate_turns([Turn(**value) for value in row['turns']]))
+        except (ValueError, TypeError) as exc:
+            raise ValueError(f'line {number}: {exc}') from exc
+    return result
