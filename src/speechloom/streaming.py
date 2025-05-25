@@ -115,3 +115,32 @@ class AudioRing:
     @property
     def size(self) -> int:
         return len(self._samples)
+
+
+class PCMStream:
+    """Accept arbitrary byte chunks, exposing complete fixed-size audio frames."""
+
+    def __init__(self, frame_samples: int = 320):
+        self.frame_bytes = integer(frame_samples, 1) * 2
+        self._pending = bytearray()
+        self.closed = False
+
+    def feed(self, payload: bytes) -> list[np.ndarray]:
+        if self.closed:
+            raise ValueError('PCM stream is closed')
+        self._pending.extend(payload)
+        frames = []
+        while len(self._pending) >= self.frame_bytes:
+            frames.append(pcm_decode(bytes(self._pending[: self.frame_bytes])))
+            del self._pending[: self.frame_bytes]
+        return frames
+
+    def finish(self) -> list[np.ndarray]:
+        if self.closed:
+            raise ValueError('PCM stream is closed')
+        if len(self._pending) % 2:
+            raise ValueError('truncated PCM sample')
+        result = [pcm_decode(bytes(self._pending))] if self._pending else []
+        self._pending.clear()
+        self.closed = True
+        return result
