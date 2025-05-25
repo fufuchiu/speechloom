@@ -155,3 +155,8 @@ def validate_events(events) -> list[StreamEvent]:
         if event.kind in ('done', 'cancelled') and index != len(values) - 1:
             raise ValueError('events follow a terminal event')
     return values
+
+
+def encode_audio_event(samples) -> str:
+    """Represent small PCM chunks as hex for line-oriented debug traces."""
+    return pcm_encode(samples).hex()
