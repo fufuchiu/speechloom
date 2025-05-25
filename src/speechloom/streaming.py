@@ -160,3 +160,12 @@ def validate_events(events) -> list[StreamEvent]:
 def encode_audio_event(samples) -> str:
     """Represent small PCM chunks as hex for line-oriented debug traces."""
     return pcm_encode(samples).hex()
+
+
+def decode_audio_event(payload: str) -> np.ndarray:
+    """Decode a hex PCM event, rejecting malformed or truncated payloads."""
+    try:
+        raw = bytes.fromhex(payload)
+    except (ValueError, TypeError) as exc:
+        raise ValueError('invalid hexadecimal audio event') from exc
+    return pcm_decode(raw)
