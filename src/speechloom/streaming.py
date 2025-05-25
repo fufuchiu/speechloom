@@ -144,3 +144,14 @@ class PCMStream:
         self._pending.clear()
         self.closed = True
         return result
+
+
+def validate_events(events) -> list[StreamEvent]:
+    """Require contiguous sequence IDs and a single final terminal event."""
+    values = list(events)
+    for index, event in enumerate(values):
+        if event.sequence != index:
+            raise ValueError('event sequence is not contiguous from zero')
+        if event.kind in ('done', 'cancelled') and index != len(values) - 1:
+            raise ValueError('events follow a terminal event')
+    return values
