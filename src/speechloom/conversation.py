@@ -73,3 +73,11 @@ def save_conversations(path: str | Path, conversations) -> None:
         ''.join(json.dumps(row, ensure_ascii=False, sort_keys=True) + '\n' for row in rows),
         encoding='utf-8',
     )
+
+
+def response_example(
+    audio_path: str, text: str, codes, layout: TokenLayout = TokenLayout()
+) -> dict:
+    """Build a supervised audio-input / multimodal-output example."""
+    Turn('user', audio=audio_path)
+    return {'audio': audio_path, 'target_ids': pack_response(text, codes, layout)}
