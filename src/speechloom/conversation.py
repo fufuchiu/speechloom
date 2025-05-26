@@ -94,3 +94,14 @@ def truncate_turns(turns, max_turns: int) -> list[Turn]:
     if len(prefix) + len(body) > max_turns:
         raise ValueError('turn budget cannot preserve a complete final exchange')
     return validate_turns(prefix + body)
+
+
+def validate_example(data: dict, vocabulary_size: int = 516) -> dict:
+    """Reject unknown supervised-example fields and invalid target sequences."""
+    if not isinstance(data, dict) or set(data) != {'audio', 'target_ids'}:
+        raise ValueError('example requires exactly audio and target_ids')
+    Turn('user', audio=data['audio'])
+    ids = token_ids(data['target_ids'], vocabulary_size)
+    if len(ids) < 2 or ids[0] != 1 or ids[-1] != 2 or 0 in ids:
+        raise ValueError('targets require BOS/EOS and must exclude padding')
+    return {'audio': data['audio'], 'target_ids': ids}
