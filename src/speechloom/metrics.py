@@ -19,3 +19,11 @@ def real_time_factor(elapsed: float, audio_seconds: float) -> float:
     if audio == 0:
         raise ValueError('audio duration must be positive')
     return elapsed / audio
+
+
+def first_token_latency(start: float, first_token: float) -> float:
+    """Latency from request start to first output using one monotonic clock."""
+    start, end = real(start), real(first_token)
+    if end < start:
+        raise ValueError('first token precedes request start')
+    return end - start
