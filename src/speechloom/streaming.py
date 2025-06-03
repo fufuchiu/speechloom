@@ -64,3 +64,23 @@ class EventQueue:
     @property
     def pending(self) -> int:
         return len(self._events)
+
+
+class UTF8Stream:
+    """Decode tokens incrementally without emitting partial multibyte text."""
+
+    def __init__(self):
+        self._decoder = codecs.getincrementaldecoder('utf-8')('strict')
+        self.closed = False
+
+    def feed(self, payload: bytes) -> str:
+        if self.closed:
+            raise ValueError('text stream is closed')
+        return self._decoder.decode(payload, final=False)
+
+    def finish(self) -> str:
+        if self.closed:
+            raise ValueError('text stream is closed')
+        text = self._decoder.decode(b'', final=True)
+        self.closed = True
+        return text
