@@ -27,3 +27,12 @@ def first_token_latency(start: float, first_token: float) -> float:
     if end < start:
         raise ValueError('first token precedes request start')
     return end - start
+
+
+def inter_token_gaps(timestamps) -> np.ndarray:
+    """Check monotonic timestamps and return consecutive delays."""
+    x = vector(timestamps)
+    gaps = np.diff(x)
+    if (gaps < 0).any():
+        raise ValueError('timestamps must be nondecreasing')
+    return gaps
