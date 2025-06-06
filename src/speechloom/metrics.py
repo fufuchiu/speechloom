@@ -36,3 +36,17 @@ def inter_token_gaps(timestamps) -> np.ndarray:
     if (gaps < 0).any():
         raise ValueError('timestamps must be nondecreasing')
     return gaps
+
+
+def waveform_snr(reference, generated) -> float:
+    """SNR for equal-length nonempty waveforms; identical signals return +inf."""
+    ref, hyp = vector(reference), vector(generated)
+    if not len(ref) or ref.shape != hyp.shape:
+        raise ValueError('waveforms must be nonempty and aligned')
+    noise = float(np.sum((ref - hyp) ** 2))
+    signal = float(np.sum(ref**2))
+    if noise == 0:
+        return float('inf')
+    if signal == 0:
+        return -float('inf')
+    return float(10 * np.log10(signal / noise))
