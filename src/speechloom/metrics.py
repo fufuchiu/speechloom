@@ -78,3 +78,17 @@ def token_accuracy(predicted, expected, ignore_index: int = -100) -> float:
         raise ValueError('matching integer token arrays required')
     mask = c != ignore_index
     return float((a[mask] == c[mask]).mean()) if mask.any() else 0.0
+
+
+def summarize_latency(timestamps, start: float) -> dict:
+    """Summarize first output and inter-token gap statistics."""
+    times = vector(timestamps)
+    if not len(times):
+        raise ValueError('at least one output timestamp required')
+    gaps = inter_token_gaps(times)
+    return {
+        'first_token_seconds': first_token_latency(start, times[0]),
+        'tokens': len(times),
+        'mean_gap_seconds': float(gaps.mean()) if len(gaps) else 0.0,
+        'p95_gap_seconds': percentile(gaps, 0.95) if len(gaps) else 0.0,
+    }
