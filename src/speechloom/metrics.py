@@ -65,3 +65,16 @@ def bootstrap_mean(
     means = np.array([rng.choice(x, size=len(x), replace=True).mean() for _ in range(repetitions)])
     tail = (1 - confidence) / 2
     return float(np.quantile(means, tail)), float(np.quantile(means, 1 - tail))
+
+
+def token_accuracy(predicted, expected, ignore_index: int = -100) -> float:
+    """Token accuracy over the same shaped arrays, ignoring label padding."""
+    a, c = np.asarray(predicted), np.asarray(expected)
+    if (
+        a.shape != c.shape
+        or not np.issubdtype(a.dtype, np.integer)
+        or not np.issubdtype(c.dtype, np.integer)
+    ):
+        raise ValueError('matching integer token arrays required')
+    mask = c != ignore_index
+    return float((a[mask] == c[mask]).mean()) if mask.any() else 0.0
