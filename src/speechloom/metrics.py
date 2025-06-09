@@ -50,3 +50,18 @@ def waveform_snr(reference, generated) -> float:
     if signal == 0:
         return -float('inf')
     return float(10 * np.log10(signal / noise))
+
+
+def bootstrap_mean(
+    values, confidence: float = 0.95, repetitions: int = 1000, seed: int = 0
+) -> tuple[float, float]:
+    """Percentile bootstrap for independent observations, with a local RNG."""
+    x = vector(values)
+    confidence = real(confidence, 0, 1)
+    repetitions = integer(repetitions, 1)
+    if not len(x) or confidence in (0, 1):
+        raise ValueError('nonempty values and confidence strictly between zero and one required')
+    rng = np.random.default_rng(seed)
+    means = np.array([rng.choice(x, size=len(x), replace=True).mean() for _ in range(repetitions)])
+    tail = (1 - confidence) / 2
+    return float(np.quantile(means, tail)), float(np.quantile(means, 1 - tail))
