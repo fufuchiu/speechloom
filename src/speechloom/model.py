@@ -37,3 +37,18 @@ class SpeechConfig:
     @property
     def vocabulary_size(self) -> int:
         return 260 + self.audio_bins
+
+
+def sinusoidal_positions(length: int, width: int, device=None, dtype=None) -> torch.Tensor:
+    """Construct paired sine/cosine absolute position embeddings."""
+    length, width = integer(length, 1), integer(width, 2)
+    if width % 2:
+        raise ValueError('position width must be even')
+    positions = torch.arange(length, device=device, dtype=torch.float32)[:, None]
+    scales = torch.exp(
+        torch.arange(0, width, 2, device=device, dtype=torch.float32) * (-math.log(10000) / width)
+    )
+    result = torch.empty(length, width, device=device)
+    result[:, 0::2] = torch.sin(positions * scales)
+    result[:, 1::2] = torch.cos(positions * scales)
+    return result.to(dtype=dtype) if dtype is not None else result
