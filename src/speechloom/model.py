@@ -198,3 +198,27 @@ def joint_loss(
         reduction='none',
     ).reshape_as(labels)
     return (losses * weights).sum() / weights.sum()
+
+
+def train_step(
+    model: SpeechModel,
+    optimizer,
+    audio,
+    lengths,
+    input_ids,
+    labels,
+    text_weight: float = 1,
+    audio_weight: float = 1,
+    max_grad_norm: float = 1,
+) -> float:
+    """Jointly update waveform encoder and decoder with finite clipped gradients."""
+    clip = real(max_grad_norm, 0)
+    if clip == 0:
+        raise ValueError('max_grad_norm must be positive')
+    model.train()
+    optimizer.zero_grad(set_to_none=True)
+    loss = joint_loss(model(audio, lengths, input_ids), labels, 260, text_weight, audio_weight)
+    loss.backward()
+    nn.utils.clip_grad_norm_(model.parameters(), clip, error_if_nonfinite=True)
+    optimizer.step()
+    return float(loss.detach())
