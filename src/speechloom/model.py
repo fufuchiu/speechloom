@@ -161,3 +161,40 @@ class SpeechModel(nn.Module):
     ) -> torch.Tensor:
         memory, mask = self.encode(audio, lengths)
         return self.decode(input_ids, memory, mask)
+
+
+def joint_loss(
+    logits: torch.Tensor,
+    labels: torch.Tensor,
+    audio_offset: int = 260,
+    text_weight: float = 1.0,
+    audio_weight: float = 1.0,
+) -> torch.Tensor:
+    """Weighted mean cross entropy for text, codec tokens and ignored padding."""
+    offset = integer(audio_offset, 4)
+    text_weight, audio_weight = real(text_weight, 0), real(audio_weight, 0)
+    if (
+        logits.ndim != 3
+        or labels.shape != logits.shape[:2]
+        or labels.dtype not in (torch.int32, torch.int64)
+        or not torch.isfinite(logits).all()
+    ):
+        raise ValueError('invalid logits or labels')
+    if (
+        offset > logits.shape[-1]
+        or ((labels < 0) & (labels != -100)).any()
+        or (labels >= logits.shape[-1]).any()
+    ):
+        raise ValueError('invalid modality offset or label IDs')
+    weights = torch.where(
+        labels == -100, 0.0, torch.where(labels >= offset, audio_weight, text_weight)
+    )
+    if weights.sum() <= 0:
+        raise ValueError('no supervised tokens have positive weight')
+    losses = nn.functional.cross_entropy(
+        logits.reshape(-1, logits.shape[-1]),
+        labels.long().reshape(-1),
+        ignore_index=-100,
+        reduction='none',
+    ).reshape_as(labels)
+    return (losses * weights).sum() / weights.sum()
