@@ -270,3 +270,26 @@ def generate(
             return sequence
     finally:
         model.train(previous_training)
+
+
+def save_checkpoint(path: str | Path, model: SpeechModel, step: int = 0) -> None:
+    """Save configuration and CPU model weights, replacing the file atomically."""
+    path = Path(path)
+    step = integer(step)
+    payload = {
+        'format_version': 1,
+        'config': asdict(model.config),
+        'step': step,
+        'state_dict': {key: value.detach().cpu() for key, value in model.state_dict().items()},
+    }
+    import os
+    import tempfile
+
+    fd, temporary = tempfile.mkstemp(prefix=path.name + '.', suffix='.tmp', dir=path.parent)
+    os.close(fd)
+    try:
+        torch.save(payload, temporary)
+        os.replace(temporary, path)
+    finally:
+        if os.path.exists(temporary):
+            os.unlink(temporary)
