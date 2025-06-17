@@ -293,3 +293,24 @@ def save_checkpoint(path: str | Path, model: SpeechModel, step: int = 0) -> None
     finally:
         if os.path.exists(temporary):
             os.unlink(temporary)
+
+
+def load_checkpoint(path: str | Path) -> tuple[SpeechModel, int]:
+    """Use weights-only deserialization and strictly validate the checkpoint envelope."""
+    data = torch.load(path, map_location='cpu', weights_only=True)
+    if (
+        not isinstance(data, dict)
+        or set(data) != {'format_version', 'config', 'step', 'state_dict'}
+        or data['format_version'] != 1
+    ):
+        raise ValueError('unsupported checkpoint envelope')
+    try:
+        config = SpeechConfig(**data['config'])
+        step = integer(data['step'])
+        model = SpeechModel(config)
+        model.load_state_dict(data['state_dict'], strict=True)
+    except (TypeError, RuntimeError) as exc:
+        raise ValueError('incompatible checkpoint config or weights') from exc
+    if any(not torch.isfinite(value).all() for value in model.state_dict().values()):
+        raise ValueError('checkpoint contains nonfinite weights')
+    return model, step
