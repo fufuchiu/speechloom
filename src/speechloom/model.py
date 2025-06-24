@@ -222,3 +222,51 @@ def train_step(
     nn.utils.clip_grad_norm_(model.parameters(), clip, error_if_nonfinite=True)
     optimizer.step()
     return float(loss.detach())
+
+
+def generate(
+    model: SpeechModel,
+    audio: torch.Tensor,
+    lengths: torch.Tensor,
+    prompt_ids,
+    max_new_tokens: int = 64,
+    mode: str = 'mixed',
+) -> list[int]:
+    """Greedy batch-one generation with reused audio memory and modality limits."""
+    from .validation import token_ids
+
+    count = integer(max_new_tokens)
+    prompt = token_ids(prompt_ids, model.config.vocabulary_size)
+    if (
+        not prompt
+        or 0 in prompt
+        or len(prompt) + count > model.config.max_tokens
+        or audio.shape[0] != 1
+    ):
+        raise ValueError('invalid prompt, batch size or generation budget')
+    if mode not in ('text', 'audio', 'mixed'):
+        raise ValueError('mode must be text, audio or mixed')
+    previous_training = model.training
+    model.eval()
+    try:
+        with torch.no_grad():
+            memory, mask = model.encode(audio, lengths)
+            sequence = list(prompt)
+            if sequence[-1] == 2:
+                return sequence
+            for _ in range(count):
+                ids = torch.tensor([sequence], device=audio.device, dtype=torch.long)
+                logits = model.decode(ids, memory, mask)[0, -1].clone()
+                logits[[0, 1]] = -torch.inf
+                if mode == 'text':
+                    logits[260:] = -torch.inf
+                    logits[3] = -torch.inf
+                if mode == 'audio':
+                    logits[3:260] = -torch.inf
+                token = int(logits.argmax())
+                sequence.append(token)
+                if token == 2:
+                    break
+            return sequence
+    finally:
+        model.train(previous_training)
