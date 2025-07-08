@@ -12,3 +12,8 @@ def test_integer_rejects_0():
 def test_integer_rejects_1():
     with pytest.raises(ValueError):
         m.integer(True)
+
+
+def test_integer_rejects_2():
+    with pytest.raises(ValueError):
+        m.integer(1.5)
