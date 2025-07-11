@@ -27,3 +27,8 @@ def test_integer_rejects_3():
 def test_integer_rejects_4():
     with pytest.raises(ValueError):
         m.integer(None)
+
+
+def test_real_rejects_0():
+    with pytest.raises(ValueError):
+        m.real(True)
