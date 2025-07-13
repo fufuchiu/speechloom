@@ -37,3 +37,8 @@ def test_real_rejects_0():
 def test_real_rejects_1():
     with pytest.raises(ValueError):
         m.real('1')
+
+
+def test_real_rejects_2():
+    with pytest.raises(ValueError):
+        m.real(None)
