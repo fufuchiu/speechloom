@@ -47,3 +47,8 @@ def test_real_rejects_2():
 def test_real_rejects_3():
     with pytest.raises(ValueError):
         m.real(float('nan'))
+
+
+def test_real_rejects_4():
+    with pytest.raises(ValueError):
+        m.real(float('inf'))
