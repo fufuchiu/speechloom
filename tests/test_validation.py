@@ -52,3 +52,8 @@ def test_real_rejects_3():
 def test_real_rejects_4():
     with pytest.raises(ValueError):
         m.real(float('inf'))
+
+
+def test_real_rejects_5():
+    with pytest.raises(ValueError):
+        m.real(-float('inf'))
