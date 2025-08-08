@@ -62,3 +62,8 @@ def test_real_rejects_5():
 def test_vector_rejects_0():
     with pytest.raises(ValueError):
         m.vector([[1]])
+
+
+def test_vector_rejects_1():
+    with pytest.raises(ValueError):
+        m.vector(1)
