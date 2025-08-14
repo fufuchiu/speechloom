@@ -77,3 +77,7 @@ def test_vector_rejects_2():
 def test_vector_rejects_3():
     with pytest.raises(ValueError):
         m.vector([float('inf')])
+
+
+def test_integer_zero():
+    assert m.integer(0) == 0
