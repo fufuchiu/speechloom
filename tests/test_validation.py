@@ -22,3 +22,8 @@ def test_integer_rejects_2():
 def test_integer_rejects_3():
     with pytest.raises(ValueError):
         m.integer('2')
+
+
+def test_integer_rejects_4():
+    with pytest.raises(ValueError):
+        m.integer(None)
