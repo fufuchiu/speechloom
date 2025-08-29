@@ -93,3 +93,7 @@ def test_real_zero():
 
 def test_real_one():
     assert m.real(1, 0, 1) == 1
+
+
+def test_empty_vector():
+    assert m.vector([]).tolist() == []
