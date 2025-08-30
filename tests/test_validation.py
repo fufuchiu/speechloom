@@ -105,3 +105,8 @@ def test_token_empty():
 
 def test_token_bounds():
     assert m.token_ids([0, 3], 4) == [0, 3]
+
+
+def test_below_min():
+    with pytest.raises(ValueError):
+        m.real(-1, 0)
