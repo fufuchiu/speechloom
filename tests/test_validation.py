@@ -97,3 +97,7 @@ def test_real_one():
 
 def test_empty_vector():
     assert m.vector([]).tolist() == []
+
+
+def test_token_empty():
+    assert m.token_ids([], 4) == []
