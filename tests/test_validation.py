@@ -42,3 +42,8 @@ def test_real_rejects_1():
 def test_real_rejects_2():
     with pytest.raises(ValueError):
         m.real(None)
+
+
+def test_real_rejects_3():
+    with pytest.raises(ValueError):
+        m.real(float('nan'))
