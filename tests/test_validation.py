@@ -110,3 +110,8 @@ def test_token_bounds():
 def test_below_min():
     with pytest.raises(ValueError):
         m.real(-1, 0)
+
+
+def test_above_max():
+    with pytest.raises(ValueError):
+        m.real(2, 0, 1)
