@@ -72,3 +72,8 @@ def test_vector_rejects_1():
 def test_vector_rejects_2():
     with pytest.raises(ValueError):
         m.vector([float('nan')])
+
+
+def test_vector_rejects_3():
+    with pytest.raises(ValueError):
+        m.vector([float('inf')])
