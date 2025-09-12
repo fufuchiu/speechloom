@@ -125,3 +125,8 @@ def test_zero_vocab():
 def test_negative_token():
     with pytest.raises(ValueError):
         m.token_ids([-1], 4)
+
+
+def test_outside_token():
+    with pytest.raises(ValueError):
+        m.token_ids([4], 4)
