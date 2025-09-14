@@ -81,3 +81,7 @@ def test_vector_rejects_3():
 
 def test_integer_zero():
     assert m.integer(0) == 0
+
+
+def test_numpy_integer():
+    assert m.integer(np.int64(4)) == 4
