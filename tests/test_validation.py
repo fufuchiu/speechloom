@@ -89,3 +89,7 @@ def test_numpy_integer():
 
 def test_real_zero():
     assert m.real(0, 0, 1) == 0
+
+
+def test_real_one():
+    assert m.real(1, 0, 1) == 1
