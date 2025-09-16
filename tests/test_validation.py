@@ -135,3 +135,10 @@ def test_outside_token():
 def test_boolean_token():
     with pytest.raises(ValueError):
         m.token_ids([True], 4)
+
+
+def test_vector_copy():
+    x = np.array([1.0, 2.0])
+    y = m.vector(x)
+    y[0] = 0
+    assert x[0] == 1
