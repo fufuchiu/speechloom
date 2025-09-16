@@ -130,3 +130,8 @@ def test_negative_token():
 def test_outside_token():
     with pytest.raises(ValueError):
         m.token_ids([4], 4)
+
+
+def test_boolean_token():
+    with pytest.raises(ValueError):
+        m.token_ids([True], 4)
