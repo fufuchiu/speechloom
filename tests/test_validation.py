@@ -101,3 +101,7 @@ def test_empty_vector():
 
 def test_token_empty():
     assert m.token_ids([], 4) == []
+
+
+def test_token_bounds():
+    assert m.token_ids([0, 3], 4) == [0, 3]
