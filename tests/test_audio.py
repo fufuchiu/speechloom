@@ -10,3 +10,7 @@ def test_format_rate():
 
 def test_pcm_empty():
     assert m.pcm_decode(b'').tolist() == []
+
+
+def test_pcm_bounds():
+    assert m.pcm_decode(bytes.fromhex('00800000ff7f')).tolist() == [-1, 0, 32767 / 32768]
