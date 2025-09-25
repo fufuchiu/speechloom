@@ -14,3 +14,7 @@ def test_pcm_empty():
 
 def test_pcm_bounds():
     assert m.pcm_decode(bytes.fromhex('00800000ff7f')).tolist() == [-1, 0, 32767 / 32768]
+
+
+def test_pcm_clipping():
+    assert m.pcm_encode([-3, 0, 3]).hex() == '00800000ff7f'
