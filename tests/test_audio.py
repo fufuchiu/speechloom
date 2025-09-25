@@ -18,3 +18,7 @@ def test_pcm_bounds():
 
 def test_pcm_clipping():
     assert m.pcm_encode([-3, 0, 3]).hex() == '00800000ff7f'
+
+
+def test_base64_zero():
+    assert m.audio_to_base64([0]) == 'AAA='
