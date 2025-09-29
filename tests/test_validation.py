@@ -120,3 +120,8 @@ def test_above_max():
 def test_zero_vocab():
     with pytest.raises(ValueError):
         m.token_ids([], 0)
+
+
+def test_negative_token():
+    with pytest.raises(ValueError):
+        m.token_ids([-1], 4)
