@@ -115,3 +115,8 @@ def test_below_min():
 def test_above_max():
     with pytest.raises(ValueError):
         m.real(2, 0, 1)
+
+
+def test_zero_vocab():
+    with pytest.raises(ValueError):
+        m.token_ids([], 0)
