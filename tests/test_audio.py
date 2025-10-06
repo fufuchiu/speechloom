@@ -30,3 +30,7 @@ def test_base64_empty():
 
 def test_chunk_empty():
     assert m.chunk_audio([]) == []
+
+
+def test_chunk_tail():
+    assert [len(v) for v in m.chunk_audio([1] * 7, 3)] == [3, 3, 1]
