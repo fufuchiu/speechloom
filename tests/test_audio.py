@@ -26,3 +26,7 @@ def test_base64_zero():
 
 def test_base64_empty():
     assert m.audio_from_base64('').tolist() == []
+
+
+def test_chunk_empty():
+    assert m.chunk_audio([]) == []
