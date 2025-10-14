@@ -22,3 +22,7 @@ def test_pcm_clipping():
 
 def test_base64_zero():
     assert m.audio_to_base64([0]) == 'AAA='
+
+
+def test_base64_empty():
+    assert m.audio_from_base64('').tolist() == []
