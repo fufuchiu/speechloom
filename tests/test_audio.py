@@ -38,3 +38,7 @@ def test_chunk_tail():
 
 def test_energy_empty():
     assert m.rms_energy([]) == 0
+
+
+def test_energy_unit():
+    assert m.rms_energy([-1, 1]) == 1
