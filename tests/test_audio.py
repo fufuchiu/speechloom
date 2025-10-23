@@ -34,3 +34,7 @@ def test_chunk_empty():
 
 def test_chunk_tail():
     assert [len(v) for v in m.chunk_audio([1] * 7, 3)] == [3, 3, 1]
+
+
+def test_energy_empty():
+    assert m.rms_energy([]) == 0
