@@ -50,3 +50,7 @@ def test_crossfade_none():
 
 def test_crossfade_equal():
     assert m.crossfade([1, 1], [1, 1], 2).tolist() == [1, 1]
+
+
+def test_crossfade_one():
+    assert m.crossfade([0, 0], [1, 1], 1).tolist() == [0, 0.5, 1]
