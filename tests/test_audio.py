@@ -54,3 +54,7 @@ def test_crossfade_equal():
 
 def test_crossfade_one():
     assert m.crossfade([0, 0], [1, 1], 1).tolist() == [0, 0.5, 1]
+
+
+def test_sample_seconds():
+    assert m.samples_to_seconds(160, 16000) == 0.01
