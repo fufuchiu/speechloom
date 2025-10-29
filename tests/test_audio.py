@@ -46,3 +46,7 @@ def test_energy_unit():
 
 def test_crossfade_none():
     assert m.crossfade([1], [2], 0).tolist() == [1, 2]
+
+
+def test_crossfade_equal():
+    assert m.crossfade([1, 1], [1, 1], 2).tolist() == [1, 1]
