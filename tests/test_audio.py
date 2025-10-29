@@ -58,3 +58,7 @@ def test_crossfade_one():
 
 def test_sample_seconds():
     assert m.samples_to_seconds(160, 16000) == 0.01
+
+
+def test_round_half_up():
+    assert m.seconds_to_samples(0.5, 1) == 1
