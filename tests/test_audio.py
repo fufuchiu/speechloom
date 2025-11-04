@@ -42,3 +42,7 @@ def test_energy_empty():
 
 def test_energy_unit():
     assert m.rms_energy([-1, 1]) == 1
+
+
+def test_crossfade_none():
+    assert m.crossfade([1], [2], 0).tolist() == [1, 2]
