@@ -66,3 +66,8 @@ def test_round_half_up():
 
 def test_round_below_half():
     assert m.seconds_to_samples(0.49, 1) == 0
+
+
+def test_zero_rate():
+    with pytest.raises(ValueError):
+        m.AudioFormat(0)
