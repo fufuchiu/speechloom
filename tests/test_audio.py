@@ -71,3 +71,8 @@ def test_round_below_half():
 def test_zero_rate():
     with pytest.raises(ValueError):
         m.AudioFormat(0)
+
+
+def test_stereo():
+    with pytest.raises(ValueError):
+        m.AudioFormat(channels=2)
