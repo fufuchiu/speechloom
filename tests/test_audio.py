@@ -62,3 +62,7 @@ def test_sample_seconds():
 
 def test_round_half_up():
     assert m.seconds_to_samples(0.5, 1) == 1
+
+
+def test_round_below_half():
+    assert m.seconds_to_samples(0.49, 1) == 0
