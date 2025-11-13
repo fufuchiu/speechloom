@@ -81,3 +81,8 @@ def test_stereo():
 def test_wrong_width():
     with pytest.raises(ValueError):
         m.AudioFormat(sample_width=1)
+
+
+def test_pcm_truncated():
+    with pytest.raises(ValueError):
+        m.pcm_decode(b'x')
