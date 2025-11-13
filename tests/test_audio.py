@@ -96,3 +96,8 @@ def test_base64_invalid():
 def test_base64_whitespace():
     with pytest.raises(ValueError):
         m.audio_from_base64('AA A=')
+
+
+def test_base64_excess():
+    with pytest.raises(ValueError):
+        m.audio_from_base64('AAAAAA==', 2)
