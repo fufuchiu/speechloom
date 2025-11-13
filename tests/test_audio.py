@@ -86,3 +86,8 @@ def test_wrong_width():
 def test_pcm_truncated():
     with pytest.raises(ValueError):
         m.pcm_decode(b'x')
+
+
+def test_base64_invalid():
+    with pytest.raises(ValueError):
+        m.audio_from_base64('!!!!')
