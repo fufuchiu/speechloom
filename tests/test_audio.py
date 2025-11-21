@@ -106,3 +106,8 @@ def test_base64_excess():
 def test_base64_odd():
     with pytest.raises(ValueError):
         m.audio_from_base64('AA==')
+
+
+def test_zero_chunk():
+    with pytest.raises(ValueError):
+        m.chunk_audio([], 0)
