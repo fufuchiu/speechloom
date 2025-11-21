@@ -116,3 +116,8 @@ def test_zero_chunk():
 def test_empty_batch():
     with pytest.raises(ValueError):
         m.pad_audio([])
+
+
+def test_empty_member():
+    with pytest.raises(ValueError):
+        m.pad_audio([[1], []])
