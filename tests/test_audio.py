@@ -111,3 +111,8 @@ def test_base64_odd():
 def test_zero_chunk():
     with pytest.raises(ValueError):
         m.chunk_audio([], 0)
+
+
+def test_empty_batch():
+    with pytest.raises(ValueError):
+        m.pad_audio([])
