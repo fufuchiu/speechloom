@@ -131,3 +131,8 @@ def test_zero_multiple():
 def test_excess_overlap():
     with pytest.raises(ValueError):
         m.crossfade([1], [2], 2)
+
+
+def test_negative_overlap():
+    with pytest.raises(ValueError):
+        m.crossfade([1], [2], -1)
