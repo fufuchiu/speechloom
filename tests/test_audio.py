@@ -121,3 +121,8 @@ def test_empty_batch():
 def test_empty_member():
     with pytest.raises(ValueError):
         m.pad_audio([[1], []])
+
+
+def test_zero_multiple():
+    with pytest.raises(ValueError):
+        m.pad_audio([[1]], 0)
