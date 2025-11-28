@@ -126,3 +126,8 @@ def test_empty_member():
 def test_zero_multiple():
     with pytest.raises(ValueError):
         m.pad_audio([[1]], 0)
+
+
+def test_excess_overlap():
+    with pytest.raises(ValueError):
+        m.crossfade([1], [2], 2)
