@@ -152,3 +152,8 @@ def test_padded_batch_lengths():
     x, n = m.pad_audio([[1, 2, 3], [4]], 4)
     assert x.tolist() == [[1, 2, 3, 0], [4, 0, 0, 0]]
     assert n.tolist() == [3, 1]
+
+
+def test_chunk_reconstruction():
+    x = np.linspace(-1, 1, 37)
+    assert np.concatenate(m.chunk_audio(x, 8)) == pytest.approx(x)
