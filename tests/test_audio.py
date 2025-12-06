@@ -146,3 +146,9 @@ def test_negative_time():
 def test_invalid_clock_rate():
     with pytest.raises(ValueError):
         m.seconds_to_samples(1, 0)
+
+
+def test_padded_batch_lengths():
+    x, n = m.pad_audio([[1, 2, 3], [4]], 4)
+    assert x.tolist() == [[1, 2, 3, 0], [4, 0, 0, 0]]
+    assert n.tolist() == [3, 1]
