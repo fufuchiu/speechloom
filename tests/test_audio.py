@@ -157,3 +157,8 @@ def test_padded_batch_lengths():
 def test_chunk_reconstruction():
     x = np.linspace(-1, 1, 37)
     assert np.concatenate(m.chunk_audio(x, 8)) == pytest.approx(x)
+
+
+def test_base64_roundtrip():
+    x = np.array([-1, -0.5, 0, 0.5])
+    assert m.audio_from_base64(m.audio_to_base64(x)) == pytest.approx(x)
