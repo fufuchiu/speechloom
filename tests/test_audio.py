@@ -76,3 +76,8 @@ def test_zero_rate():
 def test_stereo():
     with pytest.raises(ValueError):
         m.AudioFormat(channels=2)
+
+
+def test_wrong_width():
+    with pytest.raises(ValueError):
+        m.AudioFormat(sample_width=1)
