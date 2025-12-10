@@ -91,3 +91,8 @@ def test_pcm_truncated():
 def test_base64_invalid():
     with pytest.raises(ValueError):
         m.audio_from_base64('!!!!')
+
+
+def test_base64_whitespace():
+    with pytest.raises(ValueError):
+        m.audio_from_base64('AA A=')
