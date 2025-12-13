@@ -162,3 +162,9 @@ def test_chunk_reconstruction():
 def test_base64_roundtrip():
     x = np.array([-1, -0.5, 0, 0.5])
     assert m.audio_from_base64(m.audio_to_base64(x)) == pytest.approx(x)
+
+
+def test_crossfade_reversal():
+    a = np.array([1, 2, 3.0])
+    c = np.array([4, 5, 6.0])
+    assert m.crossfade(a, c, 2) == pytest.approx(m.crossfade(c[::-1], a[::-1], 2)[::-1])
