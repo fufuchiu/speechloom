@@ -136,3 +136,8 @@ def test_excess_overlap():
 def test_negative_overlap():
     with pytest.raises(ValueError):
         m.crossfade([1], [2], -1)
+
+
+def test_negative_time():
+    with pytest.raises(ValueError):
+        m.seconds_to_samples(-1)
