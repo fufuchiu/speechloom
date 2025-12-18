@@ -141,3 +141,8 @@ def test_negative_overlap():
 def test_negative_time():
     with pytest.raises(ValueError):
         m.seconds_to_samples(-1)
+
+
+def test_invalid_clock_rate():
+    with pytest.raises(ValueError):
+        m.seconds_to_samples(1, 0)
