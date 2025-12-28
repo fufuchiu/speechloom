@@ -110,3 +110,10 @@ def test_unsorted_buckets():
 def test_duplicate_buckets():
     with pytest.raises(ValueError):
         m.length_buckets([1], (2, 2))
+
+
+def test_teacher_forcing_shift():
+    batch = m.shift_targets([[1, 4, 5, 2], [1, 2]], 10)
+    assert batch['input_ids'].tolist() == [[1, 4, 5], [1, 0, 0]]
+    assert batch['labels'].tolist() == [[4, 5, 2], [2, -100, -100]]
+    assert batch['lengths'].tolist() == [3, 1]
