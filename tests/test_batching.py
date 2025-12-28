@@ -105,3 +105,8 @@ def test_oversized_sequence():
 def test_unsorted_buckets():
     with pytest.raises(ValueError):
         m.length_buckets([1], (5, 2))
+
+
+def test_duplicate_buckets():
+    with pytest.raises(ValueError):
+        m.length_buckets([1], (2, 2))
