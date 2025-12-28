@@ -117,3 +117,10 @@ def test_teacher_forcing_shift():
     assert batch['input_ids'].tolist() == [[1, 4, 5], [1, 0, 0]]
     assert batch['labels'].tolist() == [[4, 5, 2], [2, -100, -100]]
     assert batch['lengths'].tolist() == [3, 1]
+
+
+def test_padded_budget_invariant():
+    lengths = [1, 9, 2, 2, 8, 4, 7, 3]
+    batches = m.token_budget_batches(lengths, 16)
+    assert [i for batch in batches for i in batch] == list(range(len(lengths)))
+    assert all(max(lengths[i] for i in batch) * len(batch) <= 16 for batch in batches)
