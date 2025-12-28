@@ -124,3 +124,8 @@ def test_padded_budget_invariant():
     batches = m.token_budget_batches(lengths, 16)
     assert [i for batch in batches for i in batch] == list(range(len(lengths)))
     assert all(max(lengths[i] for i in batch) * len(batch) <= 16 for batch in batches)
+
+
+def test_padding_inverse_lengths():
+    lengths = [1, 3, 5]
+    assert (~m.padding_mask(lengths)).sum(1).tolist() == lengths
