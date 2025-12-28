@@ -100,3 +100,8 @@ def test_zero_budget():
 def test_oversized_sequence():
     with pytest.raises(ValueError):
         m.token_budget_batches([11], 10)
+
+
+def test_unsorted_buckets():
+    with pytest.raises(ValueError):
+        m.length_buckets([1], (5, 2))
