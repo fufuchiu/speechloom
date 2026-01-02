@@ -18,3 +18,7 @@ def test_softmax_mask():
 
 def test_topk_ties():
     assert np.flatnonzero(np.isfinite(m.top_k([1, 1, 1], 2))).tolist() == [0, 1]
+
+
+def test_topp_prefix():
+    assert np.flatnonzero(np.isfinite(m.top_p(np.log([0.6, 0.3, 0.1]), 0.8))).tolist() == [0, 1]
