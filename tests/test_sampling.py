@@ -14,3 +14,7 @@ def test_softmax_shift():
 
 def test_softmax_mask():
     assert m.softmax([0, -np.inf]).tolist() == [1, 0]
+
+
+def test_topk_ties():
+    assert np.flatnonzero(np.isfinite(m.top_k([1, 1, 1], 2))).tolist() == [0, 1]
