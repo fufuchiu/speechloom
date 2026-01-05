@@ -26,3 +26,7 @@ def test_topp_prefix():
 
 def test_topp_one():
     assert np.isfinite(m.top_p([0, 1, 2], 1)).tolist() == [True, True, True]
+
+
+def test_greedy_tie():
+    assert m.sample_token([1, 1], 0) == 0
