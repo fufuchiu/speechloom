@@ -30,3 +30,7 @@ def test_topp_one():
 
 def test_greedy_tie():
     assert m.sample_token([1, 1], 0) == 0
+
+
+def test_repetition_both_signs():
+    assert m.repetition_penalty([2, -2, 0], [0, 1, 1], 2).tolist() == [1, -4, 0]
