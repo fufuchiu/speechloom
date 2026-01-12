@@ -48,3 +48,8 @@ def test_empty_logits():
 def test_nan_logits():
     with pytest.raises(ValueError):
         m.softmax([np.nan, 0])
+
+
+def test_all_masked():
+    with pytest.raises(ValueError):
+        m.softmax([-np.inf, -np.inf])
