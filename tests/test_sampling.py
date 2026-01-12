@@ -34,3 +34,7 @@ def test_greedy_tie():
 
 def test_repetition_both_signs():
     assert m.repetition_penalty([2, -2, 0], [0, 1, 1], 2).tolist() == [1, -4, 0]
+
+
+def test_allowlist():
+    assert np.flatnonzero(np.isfinite(m.allowed_tokens([1, 2, 3], [0, 2]))).tolist() == [0, 2]
