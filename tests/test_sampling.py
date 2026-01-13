@@ -53,3 +53,8 @@ def test_nan_logits():
 def test_all_masked():
     with pytest.raises(ValueError):
         m.softmax([-np.inf, -np.inf])
+
+
+def test_positive_infinity():
+    with pytest.raises(ValueError):
+        m.softmax([np.inf, 0])
