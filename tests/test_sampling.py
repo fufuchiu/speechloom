@@ -58,3 +58,8 @@ def test_all_masked():
 def test_positive_infinity():
     with pytest.raises(ValueError):
         m.softmax([np.inf, 0])
+
+
+def test_zero_temperature():
+    with pytest.raises(ValueError):
+        m.softmax([0], 0)
