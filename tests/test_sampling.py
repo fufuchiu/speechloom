@@ -83,3 +83,8 @@ def test_oversized_k():
 def test_zero_p():
     with pytest.raises(ValueError):
         m.top_p([1], 0)
+
+
+def test_high_p():
+    with pytest.raises(ValueError):
+        m.top_p([1], 1.1)
