@@ -88,3 +88,8 @@ def test_zero_p():
 def test_high_p():
     with pytest.raises(ValueError):
         m.top_p([1], 1.1)
+
+
+def test_low_penalty():
+    with pytest.raises(ValueError):
+        m.repetition_penalty([1], [], 0.5)
