@@ -98,3 +98,8 @@ def test_low_penalty():
 def test_unknown_previous():
     with pytest.raises(ValueError):
         m.repetition_penalty([1], [2])
+
+
+def test_empty_allowlist():
+    with pytest.raises(ValueError):
+        m.allowed_tokens([1], [])
