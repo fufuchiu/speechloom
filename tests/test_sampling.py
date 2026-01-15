@@ -93,3 +93,8 @@ def test_high_p():
 def test_low_penalty():
     with pytest.raises(ValueError):
         m.repetition_penalty([1], [], 0.5)
+
+
+def test_unknown_previous():
+    with pytest.raises(ValueError):
+        m.repetition_penalty([1], [2])
