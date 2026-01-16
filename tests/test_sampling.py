@@ -112,3 +112,7 @@ def test_masked_allowlist():
 
 def test_seeded_sampling():
     assert m.sample_token([1, 2, 3], 1, 7) == m.sample_token([1, 2, 3], 1, 7)
+
+
+def test_softmax_invariant_shift():
+    assert m.softmax([1, 2, 3]) == pytest.approx(m.softmax([-9, -8, -7]))
