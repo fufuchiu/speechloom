@@ -108,3 +108,7 @@ def test_empty_allowlist():
 def test_masked_allowlist():
     with pytest.raises(ValueError):
         m.allowed_tokens([0, -np.inf], [1])
+
+
+def test_seeded_sampling():
+    assert m.sample_token([1, 2, 3], 1, 7) == m.sample_token([1, 2, 3], 1, 7)
