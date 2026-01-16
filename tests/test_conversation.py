@@ -1,0 +1,8 @@
+import pytest
+
+from speechloom import conversation as m
+
+
+def test_unknown_role():
+    with pytest.raises(ValueError):
+        m.Turn('tool', 'x')
