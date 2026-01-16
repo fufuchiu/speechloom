@@ -116,3 +116,7 @@ def test_seeded_sampling():
 
 def test_softmax_invariant_shift():
     assert m.softmax([1, 2, 3]) == pytest.approx(m.softmax([-9, -8, -7]))
+
+
+def test_temperature_flattens():
+    assert m.softmax([0, 4], 4)[0] > m.softmax([0, 4], 1)[0]
