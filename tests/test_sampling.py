@@ -120,3 +120,9 @@ def test_softmax_invariant_shift():
 
 def test_temperature_flattens():
     assert m.softmax([0, 4], 4)[0] > m.softmax([0, 4], 1)[0]
+
+
+def test_mask_without_mutation():
+    x = np.array([1.0, 2.0, 3.0])
+    m.top_k(x, 1)
+    assert x.tolist() == [1, 2, 3]
