@@ -43,3 +43,8 @@ def test_allowlist():
 def test_empty_logits():
     with pytest.raises(ValueError):
         m.softmax([])
+
+
+def test_nan_logits():
+    with pytest.raises(ValueError):
+        m.softmax([np.nan, 0])
