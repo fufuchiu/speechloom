@@ -38,3 +38,8 @@ def test_repetition_both_signs():
 
 def test_allowlist():
     assert np.flatnonzero(np.isfinite(m.allowed_tokens([1, 2, 3], [0, 2]))).tolist() == [0, 2]
+
+
+def test_empty_logits():
+    with pytest.raises(ValueError):
+        m.softmax([])
