@@ -21,3 +21,8 @@ def test_system_audio():
 def test_empty_audio():
     with pytest.raises(ValueError):
         m.Turn('user', audio='')
+
+
+def test_nonstring_text():
+    with pytest.raises(ValueError):
+        m.Turn('user', text=1)
