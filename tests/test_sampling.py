@@ -63,3 +63,8 @@ def test_positive_infinity():
 def test_zero_temperature():
     with pytest.raises(ValueError):
         m.softmax([0], 0)
+
+
+def test_negative_temperature():
+    with pytest.raises(ValueError):
+        m.sample_token([0], -1)
