@@ -68,3 +68,8 @@ def test_zero_temperature():
 def test_negative_temperature():
     with pytest.raises(ValueError):
         m.sample_token([0], -1)
+
+
+def test_zero_k():
+    with pytest.raises(ValueError):
+        m.top_k([1], 0)
