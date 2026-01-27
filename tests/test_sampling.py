@@ -73,3 +73,8 @@ def test_negative_temperature():
 def test_zero_k():
     with pytest.raises(ValueError):
         m.top_k([1], 0)
+
+
+def test_oversized_k():
+    with pytest.raises(ValueError):
+        m.top_k([1], 2)
