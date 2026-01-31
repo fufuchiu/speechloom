@@ -56,3 +56,8 @@ def test_system_midway():
 def test_untyped_turn():
     with pytest.raises(ValueError):
         m.validate_turns([{'role': 'user', 'text': 'x'}])
+
+
+def test_bad_example_fields():
+    with pytest.raises(ValueError):
+        m.validate_example({'audio': 'a.wav', 'target_ids': [1, 2], 'extra': 1})
