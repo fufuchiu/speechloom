@@ -66,3 +66,8 @@ def test_bad_example_fields():
 def test_missing_bos():
     with pytest.raises(ValueError):
         m.validate_example({'audio': 'a.wav', 'target_ids': [4, 2]})
+
+
+def test_missing_eos():
+    with pytest.raises(ValueError):
+        m.validate_example({'audio': 'a.wav', 'target_ids': [1, 4]})
