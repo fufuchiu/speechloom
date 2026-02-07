@@ -76,3 +76,8 @@ def test_missing_eos():
 def test_target_padding():
     with pytest.raises(ValueError):
         m.validate_example({'audio': 'a.wav', 'target_ids': [1, 0, 2]})
+
+
+def test_zero_turn_budget():
+    with pytest.raises(ValueError):
+        m.truncate_turns([m.Turn('user', 'u')], 0)
