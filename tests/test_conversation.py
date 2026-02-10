@@ -85,3 +85,7 @@ def test_zero_turn_budget():
 
 def test_audio_only_user():
     assert m.Turn('user', audio='a.wav').text == ''
+
+
+def test_valid_exchange():
+    assert len(m.validate_turns([m.Turn('user', 'u'), m.Turn('assistant', 'a')])) == 2
