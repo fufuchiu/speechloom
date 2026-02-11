@@ -103,3 +103,8 @@ def test_unknown_previous():
 def test_empty_allowlist():
     with pytest.raises(ValueError):
         m.allowed_tokens([1], [])
+
+
+def test_masked_allowlist():
+    with pytest.raises(ValueError):
+        m.allowed_tokens([0, -np.inf], [1])
