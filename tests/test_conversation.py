@@ -93,3 +93,14 @@ def test_valid_exchange():
 
 def test_valid_system():
     assert len(m.validate_turns([m.Turn('system', 's'), m.Turn('user', 'u')])) == 2
+
+
+def test_truncate_pairs():
+    turns = [
+        m.Turn('system', 's'),
+        m.Turn('user', 'u1'),
+        m.Turn('assistant', 'a1'),
+        m.Turn('user', 'u2'),
+        m.Turn('assistant', 'a2'),
+    ]
+    assert [x.text for x in m.truncate_turns(turns, 3)] == ['s', 'u2', 'a2']
