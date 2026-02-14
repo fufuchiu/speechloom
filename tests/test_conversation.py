@@ -136,3 +136,14 @@ def test_load_invalid_json():
         p.write_text('{\n')
         with pytest.raises(ValueError, match='line 1'):
             m.load_conversations(p)
+
+
+def test_load_wrong_envelope():
+    import tempfile
+    from pathlib import Path
+
+    with tempfile.TemporaryDirectory() as d:
+        p = Path(d) / 'turns.jsonl'
+        p.write_text('{"other":[]}')
+        with pytest.raises(ValueError, match='line 1'):
+            m.load_conversations(p)
