@@ -147,3 +147,14 @@ def test_load_wrong_envelope():
         p.write_text('{"other":[]}')
         with pytest.raises(ValueError, match='line 1'):
             m.load_conversations(p)
+
+
+def test_load_unknown_field():
+    import tempfile
+    from pathlib import Path
+
+    with tempfile.TemporaryDirectory() as d:
+        p = Path(d) / 'turns.jsonl'
+        p.write_text('{"turns":[{"role":"user","text":"x","extra":1}]}')
+        with pytest.raises(ValueError, match='line 1'):
+            m.load_conversations(p)
