@@ -158,3 +158,14 @@ def test_load_unknown_field():
         p.write_text('{"turns":[{"role":"user","text":"x","extra":1}]}')
         with pytest.raises(ValueError, match='line 1'):
             m.load_conversations(p)
+
+
+def test_load_bad_sequence():
+    import tempfile
+    from pathlib import Path
+
+    with tempfile.TemporaryDirectory() as d:
+        p = Path(d) / 'turns.jsonl'
+        p.write_text('{"turns":[{"role":"assistant","text":"x"}]}')
+        with pytest.raises(ValueError, match='line 1'):
+            m.load_conversations(p)
