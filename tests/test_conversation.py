@@ -169,3 +169,7 @@ def test_load_bad_sequence():
         p.write_text('{"turns":[{"role":"assistant","text":"x"}]}')
         with pytest.raises(ValueError, match='line 1'):
             m.load_conversations(p)
+
+
+def test_supervised_response():
+    assert m.response_example('a.wav', 'a', [0])['target_ids'] == [1, 101, 3, 260, 2]
