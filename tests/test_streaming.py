@@ -12,3 +12,8 @@ def test_negative_sequence():
 def test_unknown_kind():
     with pytest.raises(ValueError):
         m.StreamEvent(0, 'token', 'x')
+
+
+def test_terminal_payload():
+    with pytest.raises(ValueError):
+        m.StreamEvent(0, 'done', 'x')
