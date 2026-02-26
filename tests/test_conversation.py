@@ -11,3 +11,8 @@ def test_unknown_role():
 def test_empty_turn():
     with pytest.raises(ValueError):
         m.Turn('user')
+
+
+def test_system_audio():
+    with pytest.raises(ValueError):
+        m.Turn('system', audio='x.wav')
