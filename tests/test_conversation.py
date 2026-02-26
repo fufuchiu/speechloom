@@ -26,3 +26,8 @@ def test_empty_audio():
 def test_nonstring_text():
     with pytest.raises(ValueError):
         m.Turn('user', text=1)
+
+
+def test_no_turns():
+    with pytest.raises(ValueError):
+        m.validate_turns([])
