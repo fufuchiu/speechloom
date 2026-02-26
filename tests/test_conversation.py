@@ -16,3 +16,8 @@ def test_empty_turn():
 def test_system_audio():
     with pytest.raises(ValueError):
         m.Turn('system', audio='x.wav')
+
+
+def test_empty_audio():
+    with pytest.raises(ValueError):
+        m.Turn('user', audio='')
