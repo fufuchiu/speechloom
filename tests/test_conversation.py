@@ -46,3 +46,8 @@ def test_assistant_first():
 def test_double_user():
     with pytest.raises(ValueError):
         m.validate_turns([m.Turn('user', 'u'), m.Turn('user', 'v')])
+
+
+def test_system_midway():
+    with pytest.raises(ValueError):
+        m.validate_turns([m.Turn('user', 'u'), m.Turn('system', 's')])
