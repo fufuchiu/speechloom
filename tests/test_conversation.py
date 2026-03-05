@@ -36,3 +36,8 @@ def test_no_turns():
 def test_system_only():
     with pytest.raises(ValueError):
         m.validate_turns([m.Turn('system', 's')])
+
+
+def test_assistant_first():
+    with pytest.raises(ValueError):
+        m.validate_turns([m.Turn('assistant', 'a')])
