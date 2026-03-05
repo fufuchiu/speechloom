@@ -31,3 +31,8 @@ def test_nonstring_text():
 def test_no_turns():
     with pytest.raises(ValueError):
         m.validate_turns([])
+
+
+def test_system_only():
+    with pytest.raises(ValueError):
+        m.validate_turns([m.Turn('system', 's')])
