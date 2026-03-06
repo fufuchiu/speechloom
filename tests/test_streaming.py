@@ -22,3 +22,8 @@ def test_terminal_payload():
 def test_zero_queue():
     with pytest.raises(ValueError):
         m.EventQueue(0)
+
+
+def test_zero_ring():
+    with pytest.raises(ValueError):
+        m.AudioRing(0)
