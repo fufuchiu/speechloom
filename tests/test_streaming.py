@@ -32,3 +32,8 @@ def test_zero_ring():
 def test_zero_pcm():
     with pytest.raises(ValueError):
         m.PCMStream(0)
+
+
+def test_bad_hex():
+    with pytest.raises(ValueError):
+        m.decode_audio_event('zz')
