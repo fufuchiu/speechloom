@@ -51,3 +51,12 @@ def test_queue_fifo_and_sequence():
     assert q.pop().sequence == 0
     assert q.pop().payload == 'b'
     assert q.pop() is None
+
+
+def test_queue_overflow_atomic():
+    q = m.EventQueue(1)
+    q.push('text', 'a')
+    with pytest.raises(BufferError):
+        q.push('text', 'b')
+    assert q.pop().payload == 'a'
+    assert q.push('text', 'c').sequence == 1
