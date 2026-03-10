@@ -42,3 +42,12 @@ def test_bad_hex():
 def test_odd_pcm_hex():
     with pytest.raises(ValueError):
         m.decode_audio_event('ff')
+
+
+def test_queue_fifo_and_sequence():
+    q = m.EventQueue(3)
+    q.push('text', 'a')
+    q.push('text', 'b')
+    assert q.pop().sequence == 0
+    assert q.pop().payload == 'b'
+    assert q.pop() is None
