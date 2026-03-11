@@ -77,3 +77,10 @@ def test_cancel_discards_pending():
     assert event.kind == 'cancelled'
     assert q.pending == 1
     assert q.drain() == [event]
+
+
+def test_cancel_closed():
+    q = m.EventQueue()
+    q.push('done')
+    with pytest.raises(ValueError):
+        q.cancel()
