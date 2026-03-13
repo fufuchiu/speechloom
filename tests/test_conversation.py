@@ -61,3 +61,8 @@ def test_untyped_turn():
 def test_bad_example_fields():
     with pytest.raises(ValueError):
         m.validate_example({'audio': 'a.wav', 'target_ids': [1, 2], 'extra': 1})
+
+
+def test_missing_bos():
+    with pytest.raises(ValueError):
+        m.validate_example({'audio': 'a.wav', 'target_ids': [4, 2]})
