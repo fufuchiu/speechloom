@@ -51,3 +51,8 @@ def test_double_user():
 def test_system_midway():
     with pytest.raises(ValueError):
         m.validate_turns([m.Turn('user', 'u'), m.Turn('system', 's')])
+
+
+def test_untyped_turn():
+    with pytest.raises(ValueError):
+        m.validate_turns([{'role': 'user', 'text': 'x'}])
