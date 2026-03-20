@@ -71,3 +71,8 @@ def test_missing_bos():
 def test_missing_eos():
     with pytest.raises(ValueError):
         m.validate_example({'audio': 'a.wav', 'target_ids': [1, 4]})
+
+
+def test_target_padding():
+    with pytest.raises(ValueError):
+        m.validate_example({'audio': 'a.wav', 'target_ids': [1, 0, 2]})
