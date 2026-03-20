@@ -81,3 +81,7 @@ def test_target_padding():
 def test_zero_turn_budget():
     with pytest.raises(ValueError):
         m.truncate_turns([m.Turn('user', 'u')], 0)
+
+
+def test_audio_only_user():
+    assert m.Turn('user', audio='a.wav').text == ''
