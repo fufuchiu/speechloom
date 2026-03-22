@@ -84,3 +84,10 @@ def test_cancel_closed():
     q.push('done')
     with pytest.raises(ValueError):
         q.cancel()
+
+
+def test_drain_idempotent():
+    q = m.EventQueue()
+    q.push('text', 'a')
+    assert len(q.drain()) == 1
+    assert q.drain() == []
