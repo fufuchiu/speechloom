@@ -89,3 +89,7 @@ def test_audio_only_user():
 
 def test_valid_exchange():
     assert len(m.validate_turns([m.Turn('user', 'u'), m.Turn('assistant', 'a')])) == 2
+
+
+def test_valid_system():
+    assert len(m.validate_turns([m.Turn('system', 's'), m.Turn('user', 'u')])) == 2
