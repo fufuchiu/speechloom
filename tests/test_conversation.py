@@ -104,3 +104,8 @@ def test_truncate_pairs():
         m.Turn('assistant', 'a2'),
     ]
     assert [x.text for x in m.truncate_turns(turns, 3)] == ['s', 'u2', 'a2']
+
+
+def test_preserve_pending_user():
+    turns = [m.Turn('user', 'u1'), m.Turn('assistant', 'a1'), m.Turn('user', 'u2')]
+    assert [x.text for x in m.truncate_turns(turns, 1)] == ['u2']
