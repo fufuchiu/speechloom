@@ -109,3 +109,8 @@ def test_truncate_pairs():
 def test_preserve_pending_user():
     turns = [m.Turn('user', 'u1'), m.Turn('assistant', 'a1'), m.Turn('user', 'u2')]
     assert [x.text for x in m.truncate_turns(turns, 1)] == ['u2']
+
+
+def test_reject_incomplete_budget():
+    with pytest.raises(ValueError):
+        m.truncate_turns([m.Turn('user', 'u'), m.Turn('assistant', 'a')], 1)
