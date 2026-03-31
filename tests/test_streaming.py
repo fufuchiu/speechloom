@@ -91,3 +91,11 @@ def test_drain_idempotent():
     q.push('text', 'a')
     assert len(q.drain()) == 1
     assert q.drain() == []
+
+
+def test_utf8_arbitrary_boundaries():
+    s = m.UTF8Stream()
+    raw = '你好🙂'.encode()
+    parts = [s.feed(bytes([v])) for v in raw]
+    parts.append(s.finish())
+    assert ''.join(parts) == '你好🙂'
