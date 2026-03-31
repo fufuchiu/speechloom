@@ -99,3 +99,10 @@ def test_utf8_arbitrary_boundaries():
     parts = [s.feed(bytes([v])) for v in raw]
     parts.append(s.finish())
     assert ''.join(parts) == '你好🙂'
+
+
+def test_utf8_incomplete():
+    s = m.UTF8Stream()
+    s.feed(bytes([0xE4]))
+    with pytest.raises(UnicodeDecodeError):
+        s.finish()
