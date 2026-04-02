@@ -106,3 +106,10 @@ def test_utf8_incomplete():
     s.feed(bytes([0xE4]))
     with pytest.raises(UnicodeDecodeError):
         s.finish()
+
+
+def test_utf8_closed():
+    s = m.UTF8Stream()
+    s.finish()
+    with pytest.raises(ValueError):
+        s.feed(b'a')
