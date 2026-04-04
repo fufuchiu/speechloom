@@ -125,3 +125,14 @@ def test_conversation_roundtrip():
         p = Path(d) / 'turns.jsonl'
         m.save_conversations(p, rows)
         assert m.load_conversations(p) == rows
+
+
+def test_load_invalid_json():
+    import tempfile
+    from pathlib import Path
+
+    with tempfile.TemporaryDirectory() as d:
+        p = Path(d) / 'turns.jsonl'
+        p.write_text('{\n')
+        with pytest.raises(ValueError, match='line 1'):
+            m.load_conversations(p)
