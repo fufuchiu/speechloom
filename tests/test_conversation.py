@@ -114,3 +114,14 @@ def test_preserve_pending_user():
 def test_reject_incomplete_budget():
     with pytest.raises(ValueError):
         m.truncate_turns([m.Turn('user', 'u'), m.Turn('assistant', 'a')], 1)
+
+
+def test_conversation_roundtrip():
+    import tempfile
+    from pathlib import Path
+
+    rows = [[m.Turn('user', audio='u.wav'), m.Turn('assistant', '你好')]]
+    with tempfile.TemporaryDirectory() as d:
+        p = Path(d) / 'turns.jsonl'
+        m.save_conversations(p, rows)
+        assert m.load_conversations(p) == rows
