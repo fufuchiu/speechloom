@@ -120,3 +120,11 @@ def test_utf8_double_finish():
     s.finish()
     with pytest.raises(ValueError):
         s.finish()
+
+
+def test_ring_fifo():
+    r = m.AudioRing(4)
+    r.append([1, 2, 3])
+    assert r.take(2).tolist() == [1, 2]
+    r.append([4, 5])
+    assert r.take(3).tolist() == [3, 4, 5]
