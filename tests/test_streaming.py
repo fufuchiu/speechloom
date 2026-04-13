@@ -164,3 +164,15 @@ def test_ring_zero_take():
     r.append([1])
     assert r.take(0).tolist() == []
     assert r.size == 1
+
+
+def test_pcm_boundary_reconstruction():
+    from speechloom.audio import pcm_encode
+
+    s = m.PCMStream(2)
+    raw = pcm_encode([0, 0.5, -1])
+    frames = []
+    for byte in raw:
+        frames.extend(s.feed(bytes([byte])))
+    frames.extend(s.finish())
+    assert np.concatenate(frames).tolist() == [0, 0.5, -1]
