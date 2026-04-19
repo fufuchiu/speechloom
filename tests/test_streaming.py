@@ -17,3 +17,8 @@ def test_unknown_kind():
 def test_terminal_payload():
     with pytest.raises(ValueError):
         m.StreamEvent(0, 'done', 'x')
+
+
+def test_zero_queue():
+    with pytest.raises(ValueError):
+        m.EventQueue(0)
