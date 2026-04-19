@@ -27,3 +27,8 @@ def test_zero_queue():
 def test_zero_ring():
     with pytest.raises(ValueError):
         m.AudioRing(0)
+
+
+def test_zero_pcm():
+    with pytest.raises(ValueError):
+        m.PCMStream(0)
