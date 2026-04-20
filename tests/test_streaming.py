@@ -184,3 +184,10 @@ def test_pcm_truncated_final():
     with pytest.raises(ValueError):
         s.finish()
     assert not s.closed
+
+
+def test_pcm_closed():
+    s = m.PCMStream()
+    s.finish()
+    with pytest.raises(ValueError):
+        s.feed(b'')
