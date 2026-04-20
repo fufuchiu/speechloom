@@ -198,3 +198,8 @@ def test_pcm_double_finish():
     s.finish()
     with pytest.raises(ValueError):
         s.finish()
+
+
+def test_event_gap():
+    with pytest.raises(ValueError):
+        m.validate_events([m.StreamEvent(1, 'text', 'a')])
