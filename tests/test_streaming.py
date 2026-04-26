@@ -37,3 +37,8 @@ def test_zero_pcm():
 def test_bad_hex():
     with pytest.raises(ValueError):
         m.decode_audio_event('zz')
+
+
+def test_odd_pcm_hex():
+    with pytest.raises(ValueError):
+        m.decode_audio_event('ff')
