@@ -9,3 +9,7 @@ def test_percentile_median():
 
 def test_percentile_min():
     assert m.percentile([2, 1], 0) == 1
+
+
+def test_percentile_max():
+    assert m.percentile([2, 1], 1) == 2
