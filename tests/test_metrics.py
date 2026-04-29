@@ -29,3 +29,7 @@ def test_first_token():
 
 def test_gap_equal():
     assert m.inter_token_gaps([1, 1, 2]).tolist() == [0, 1]
+
+
+def test_gap_empty():
+    assert m.inter_token_gaps([]).tolist() == []
