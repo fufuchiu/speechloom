@@ -33,3 +33,7 @@ def test_gap_equal():
 
 def test_gap_empty():
     assert m.inter_token_gaps([]).tolist() == []
+
+
+def test_snr_identical():
+    assert m.waveform_snr([1, 2], [1, 2]) == float('inf')
