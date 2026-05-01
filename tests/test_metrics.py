@@ -41,3 +41,7 @@ def test_snr_identical():
 
 def test_snr_zero_ref():
     assert m.waveform_snr([0], [1]) == -float('inf')
+
+
+def test_snr_unit():
+    assert m.waveform_snr([1], [0]) == 0
