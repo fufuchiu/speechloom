@@ -68,3 +68,12 @@ def test_queue_terminal():
     with pytest.raises(ValueError):
         q.push('text', 'late')
     assert q.state == 'done'
+
+
+def test_cancel_discards_pending():
+    q = m.EventQueue(1)
+    q.push('audio', '0000')
+    event = q.cancel()
+    assert event.kind == 'cancelled'
+    assert q.pending == 1
+    assert q.drain() == [event]
