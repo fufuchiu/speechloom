@@ -60,3 +60,11 @@ def test_queue_overflow_atomic():
         q.push('text', 'b')
     assert q.pop().payload == 'a'
     assert q.push('text', 'c').sequence == 1
+
+
+def test_queue_terminal():
+    q = m.EventQueue()
+    q.push('done')
+    with pytest.raises(ValueError):
+        q.push('text', 'late')
+    assert q.state == 'done'
