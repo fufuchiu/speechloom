@@ -113,3 +113,10 @@ def test_utf8_closed():
     s.finish()
     with pytest.raises(ValueError):
         s.feed(b'a')
+
+
+def test_utf8_double_finish():
+    s = m.UTF8Stream()
+    s.finish()
+    with pytest.raises(ValueError):
+        s.finish()
