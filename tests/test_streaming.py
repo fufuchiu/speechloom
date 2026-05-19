@@ -144,3 +144,10 @@ def test_ring_drop_oldest():
     r.append([3, 4, 5])
     assert r.take(3).tolist() == [3, 4, 5]
     assert r.dropped == 2
+
+
+def test_ring_large_chunk():
+    r = m.AudioRing(2, True)
+    r.append([1, 2, 3, 4])
+    assert r.take(2).tolist() == [3, 4]
+    assert r.dropped == 2
