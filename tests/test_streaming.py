@@ -136,3 +136,11 @@ def test_ring_overflow_atomic():
     with pytest.raises(BufferError):
         r.append([3])
     assert r.take(2).tolist() == [1, 2]
+
+
+def test_ring_drop_oldest():
+    r = m.AudioRing(3, True)
+    r.append([1, 2])
+    r.append([3, 4, 5])
+    assert r.take(3).tolist() == [3, 4, 5]
+    assert r.dropped == 2
