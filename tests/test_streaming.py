@@ -128,3 +128,11 @@ def test_ring_fifo():
     assert r.take(2).tolist() == [1, 2]
     r.append([4, 5])
     assert r.take(3).tolist() == [3, 4, 5]
+
+
+def test_ring_overflow_atomic():
+    r = m.AudioRing(2)
+    r.append([1, 2])
+    with pytest.raises(BufferError):
+        r.append([3])
+    assert r.take(2).tolist() == [1, 2]
