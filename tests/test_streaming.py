@@ -151,3 +151,9 @@ def test_ring_large_chunk():
     r.append([1, 2, 3, 4])
     assert r.take(2).tolist() == [3, 4]
     assert r.dropped == 2
+
+
+def test_ring_insufficient():
+    r = m.AudioRing(2)
+    with pytest.raises(ValueError):
+        r.take(1)
