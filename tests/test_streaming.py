@@ -176,3 +176,11 @@ def test_pcm_boundary_reconstruction():
         frames.extend(s.feed(bytes([byte])))
     frames.extend(s.finish())
     assert np.concatenate(frames).tolist() == [0, 0.5, -1]
+
+
+def test_pcm_truncated_final():
+    s = m.PCMStream()
+    s.feed(b'x')
+    with pytest.raises(ValueError):
+        s.finish()
+    assert not s.closed
