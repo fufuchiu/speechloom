@@ -49,3 +49,7 @@ def test_snr_unit():
 
 def test_bootstrap_constant():
     assert m.bootstrap_mean([4, 4, 4], repetitions=20) == (4, 4)
+
+
+def test_accuracy_ignore():
+    assert m.token_accuracy([1, 9, 4], [1, -100, 3]) == 0.5
