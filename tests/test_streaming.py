@@ -157,3 +157,10 @@ def test_ring_insufficient():
     r = m.AudioRing(2)
     with pytest.raises(ValueError):
         r.take(1)
+
+
+def test_ring_zero_take():
+    r = m.AudioRing(2)
+    r.append([1])
+    assert r.take(0).tolist() == []
+    assert r.size == 1
