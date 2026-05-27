@@ -57,3 +57,8 @@ def test_accuracy_ignore():
 
 def test_accuracy_all_ignored():
     assert m.token_accuracy([1], [-100]) == 0
+
+
+def test_empty_percentile():
+    with pytest.raises(ValueError):
+        m.percentile([])
