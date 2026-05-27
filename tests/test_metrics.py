@@ -53,3 +53,7 @@ def test_bootstrap_constant():
 
 def test_accuracy_ignore():
     assert m.token_accuracy([1, 9, 4], [1, -100, 3]) == 0.5
+
+
+def test_accuracy_all_ignored():
+    assert m.token_accuracy([1], [-100]) == 0
