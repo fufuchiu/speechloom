@@ -191,3 +191,10 @@ def test_pcm_closed():
     s.finish()
     with pytest.raises(ValueError):
         s.feed(b'')
+
+
+def test_pcm_double_finish():
+    s = m.PCMStream()
+    s.finish()
+    with pytest.raises(ValueError):
+        s.finish()
