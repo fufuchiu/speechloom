@@ -208,3 +208,7 @@ def test_event_gap():
 def test_event_after_done():
     with pytest.raises(ValueError):
         m.validate_events([m.StreamEvent(0, 'done', ''), m.StreamEvent(1, 'text', 'a')])
+
+
+def test_hex_roundtrip():
+    assert m.decode_audio_event(m.encode_audio_event([-1, 0, 0.5])).tolist() == [-1, 0, 0.5]
