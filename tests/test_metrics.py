@@ -25,3 +25,7 @@ def test_rtf_zero():
 
 def test_first_token():
     assert m.first_token_latency(10, 10.25) == 0.25
+
+
+def test_gap_equal():
+    assert m.inter_token_gaps([1, 1, 2]).tolist() == [0, 1]
