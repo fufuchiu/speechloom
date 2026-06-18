@@ -13,3 +13,7 @@ def test_percentile_min():
 
 def test_percentile_max():
     assert m.percentile([2, 1], 1) == 2
+
+
+def test_rtf():
+    assert m.real_time_factor(0.5, 2) == 0.25
