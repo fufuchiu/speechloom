@@ -21,3 +21,7 @@ def test_rtf():
 
 def test_rtf_zero():
     assert m.real_time_factor(0, 2) == 0
+
+
+def test_first_token():
+    assert m.first_token_latency(10, 10.25) == 0.25
