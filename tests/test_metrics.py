@@ -67,3 +67,8 @@ def test_empty_percentile():
 def test_invalid_quantile():
     with pytest.raises(ValueError):
         m.percentile([1], 1.1)
+
+
+def test_negative_elapsed():
+    with pytest.raises(ValueError):
+        m.real_time_factor(-1, 1)
