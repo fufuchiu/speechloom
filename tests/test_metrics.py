@@ -37,3 +37,7 @@ def test_gap_empty():
 
 def test_snr_identical():
     assert m.waveform_snr([1, 2], [1, 2]) == float('inf')
+
+
+def test_snr_zero_ref():
+    assert m.waveform_snr([0], [1]) == -float('inf')
