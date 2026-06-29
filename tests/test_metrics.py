@@ -72,3 +72,8 @@ def test_invalid_quantile():
 def test_negative_elapsed():
     with pytest.raises(ValueError):
         m.real_time_factor(-1, 1)
+
+
+def test_zero_audio_duration():
+    with pytest.raises(ValueError):
+        m.real_time_factor(1, 0)
