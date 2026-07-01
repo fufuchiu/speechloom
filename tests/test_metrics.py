@@ -82,3 +82,8 @@ def test_zero_audio_duration():
 def test_reversed_clock():
     with pytest.raises(ValueError):
         m.first_token_latency(2, 1)
+
+
+def test_nonmonotonic_tokens():
+    with pytest.raises(ValueError):
+        m.inter_token_gaps([2, 1])
