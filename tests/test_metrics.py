@@ -45,3 +45,7 @@ def test_snr_zero_ref():
 
 def test_snr_unit():
     assert m.waveform_snr([1], [0]) == 0
+
+
+def test_bootstrap_constant():
+    assert m.bootstrap_mean([4, 4, 4], repetitions=20) == (4, 4)
