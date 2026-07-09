@@ -97,3 +97,8 @@ def test_empty_snr():
 def test_unaligned_snr():
     with pytest.raises(ValueError):
         m.waveform_snr([1, 2], [1])
+
+
+def test_empty_bootstrap():
+    with pytest.raises(ValueError):
+        m.bootstrap_mean([])
