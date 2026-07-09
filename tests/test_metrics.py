@@ -102,3 +102,8 @@ def test_unaligned_snr():
 def test_empty_bootstrap():
     with pytest.raises(ValueError):
         m.bootstrap_mean([])
+
+
+def test_zero_confidence():
+    with pytest.raises(ValueError):
+        m.bootstrap_mean([1], confidence=0)
