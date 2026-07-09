@@ -92,3 +92,8 @@ def test_nonmonotonic_tokens():
 def test_empty_snr():
     with pytest.raises(ValueError):
         m.waveform_snr([], [])
+
+
+def test_unaligned_snr():
+    with pytest.raises(ValueError):
+        m.waveform_snr([1, 2], [1])
