@@ -77,3 +77,8 @@ def test_negative_elapsed():
 def test_zero_audio_duration():
     with pytest.raises(ValueError):
         m.real_time_factor(1, 0)
+
+
+def test_reversed_clock():
+    with pytest.raises(ValueError):
+        m.first_token_latency(2, 1)
