@@ -62,3 +62,8 @@ def test_accuracy_all_ignored():
 def test_empty_percentile():
     with pytest.raises(ValueError):
         m.percentile([])
+
+
+def test_invalid_quantile():
+    with pytest.raises(ValueError):
+        m.percentile([1], 1.1)
