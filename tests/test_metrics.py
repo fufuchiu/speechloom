@@ -107,3 +107,8 @@ def test_empty_bootstrap():
 def test_zero_confidence():
     with pytest.raises(ValueError):
         m.bootstrap_mean([1], confidence=0)
+
+
+def test_unit_confidence():
+    with pytest.raises(ValueError):
+        m.bootstrap_mean([1], confidence=1)
