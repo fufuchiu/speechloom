@@ -87,3 +87,8 @@ def test_reversed_clock():
 def test_nonmonotonic_tokens():
     with pytest.raises(ValueError):
         m.inter_token_gaps([2, 1])
+
+
+def test_empty_snr():
+    with pytest.raises(ValueError):
+        m.waveform_snr([], [])
