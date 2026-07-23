@@ -122,3 +122,8 @@ def test_zero_repetitions():
 def test_accuracy_shape():
     with pytest.raises(ValueError):
         m.token_accuracy([1], [1, 2])
+
+
+def test_accuracy_float():
+    with pytest.raises(ValueError):
+        m.token_accuracy([1.0], [1])
