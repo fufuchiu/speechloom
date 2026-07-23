@@ -117,3 +117,8 @@ def test_unit_confidence():
 def test_zero_repetitions():
     with pytest.raises(ValueError):
         m.bootstrap_mean([1], repetitions=0)
+
+
+def test_accuracy_shape():
+    with pytest.raises(ValueError):
+        m.token_accuracy([1], [1, 2])
