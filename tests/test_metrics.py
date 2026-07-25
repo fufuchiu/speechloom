@@ -112,3 +112,8 @@ def test_zero_confidence():
 def test_unit_confidence():
     with pytest.raises(ValueError):
         m.bootstrap_mean([1], confidence=1)
+
+
+def test_zero_repetitions():
+    with pytest.raises(ValueError):
+        m.bootstrap_mean([1], repetitions=0)
