@@ -127,3 +127,8 @@ def test_accuracy_shape():
 def test_accuracy_float():
     with pytest.raises(ValueError):
         m.token_accuracy([1.0], [1])
+
+
+def test_empty_latency():
+    with pytest.raises(ValueError):
+        m.summarize_latency([], 0)
