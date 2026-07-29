@@ -138,3 +138,10 @@ def test_bootstrap_reproducible():
     assert m.bootstrap_mean([1, 2, 3, 4], repetitions=80, seed=7) == m.bootstrap_mean(
         [1, 2, 3, 4], repetitions=80, seed=7
     )
+
+
+def test_latency_summary():
+    s = m.summarize_latency([1, 1.1, 1.3], 0.5)
+    assert s['first_token_seconds'] == 0.5
+    assert s['mean_gap_seconds'] == pytest.approx(0.15)
+    assert s['p95_gap_seconds'] == pytest.approx(0.195)
