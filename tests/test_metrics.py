@@ -132,3 +132,9 @@ def test_accuracy_float():
 def test_empty_latency():
     with pytest.raises(ValueError):
         m.summarize_latency([], 0)
+
+
+def test_bootstrap_reproducible():
+    assert m.bootstrap_mean([1, 2, 3, 4], repetitions=80, seed=7) == m.bootstrap_mean(
+        [1, 2, 3, 4], repetitions=80, seed=7
+    )
