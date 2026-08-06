@@ -20,3 +20,18 @@ def test_joint_training_reaches_audio_encoder():
     assert losses[-1] < losses[0] * 0.3
     assert model.frontend.weight.grad.abs().sum() > 0
     assert model.embedding.weight.grad.abs().sum() > 0
+
+
+@pytest.mark.model
+def test_future_tokens_cannot_change_past_outputs():
+    import torch
+
+    from speechloom.model import SpeechConfig, SpeechModel
+
+    torch.manual_seed(3)
+    model = SpeechModel(SpeechConfig(audio_bins=8, d_model=16, heads=2)).eval()
+    audio = torch.randn(1, 16)
+    lengths = torch.tensor([16])
+    a = model(audio, lengths, torch.tensor([[1, 101, 102, 103]]))
+    c = model(audio, lengths, torch.tensor([[1, 101, 120, 121]]))
+    assert torch.allclose(a[:, :2], c[:, :2], atol=1e-6)
