@@ -35,3 +35,19 @@ def test_future_tokens_cannot_change_past_outputs():
     a = model(audio, lengths, torch.tensor([[1, 101, 102, 103]]))
     c = model(audio, lengths, torch.tensor([[1, 101, 120, 121]]))
     assert torch.allclose(a[:, :2], c[:, :2], atol=1e-6)
+
+
+@pytest.mark.model
+def test_padded_audio_is_invisible():
+    import torch
+
+    from speechloom.model import SpeechConfig, SpeechModel
+
+    torch.manual_seed(3)
+    model = SpeechModel(SpeechConfig(audio_bins=8, d_model=16, heads=2)).eval()
+    audio = torch.randn(2, 18)
+    changed = audio.clone()
+    changed[0, 11:] = 1000
+    lengths = torch.tensor([11, 18])
+    ids = torch.tensor([[1, 101], [1, 102]])
+    assert torch.allclose(model(audio, lengths, ids)[0], model(changed, lengths, ids)[0], atol=1e-6)
