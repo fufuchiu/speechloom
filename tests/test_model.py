@@ -51,3 +51,24 @@ def test_padded_audio_is_invisible():
     lengths = torch.tensor([11, 18])
     ids = torch.tensor([[1, 101], [1, 102]])
     assert torch.allclose(model(audio, lengths, ids)[0], model(changed, lengths, ids)[0], atol=1e-6)
+
+
+@pytest.mark.model
+def test_checkpoint_roundtrip():
+    import tempfile
+    from pathlib import Path
+
+    import torch
+
+    from speechloom.model import SpeechConfig, SpeechModel, load_checkpoint, save_checkpoint
+
+    model = SpeechModel(SpeechConfig(audio_bins=8, d_model=16, heads=2))
+    with tempfile.TemporaryDirectory() as d:
+        p = Path(d) / 'model.pt'
+        save_checkpoint(p, model, step=7)
+        restored, step = load_checkpoint(p)
+    assert step == 7
+    assert restored.config == model.config
+    assert all(
+        torch.equal(value, restored.state_dict()[key]) for key, value in model.state_dict().items()
+    )
