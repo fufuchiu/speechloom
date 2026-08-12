@@ -72,3 +72,15 @@ def test_checkpoint_roundtrip():
     assert all(
         torch.equal(value, restored.state_dict()[key]) for key, value in model.state_dict().items()
     )
+
+
+@pytest.mark.model
+def test_joint_loss_ignores_padding():
+    import torch
+
+    from speechloom.model import joint_loss
+
+    logits = torch.zeros(1, 3, 268)
+    labels = torch.tensor([[101, 260, -100]])
+    loss = joint_loss(logits, labels, text_weight=1, audio_weight=2)
+    assert float(loss) == pytest.approx(np.log(268))
