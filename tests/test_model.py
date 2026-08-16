@@ -110,3 +110,19 @@ def test_greedy_eos_stops_and_restores_training_mode():
     result = generate(model, torch.zeros(1, 10), torch.tensor([10]), [1], 8)
     assert result == [1, 2]
     assert model.training
+
+
+@pytest.mark.model
+def test_generation_audio_allowlist():
+    import torch
+
+    from speechloom.model import SpeechConfig, SpeechModel, generate
+
+    model = SpeechModel(SpeechConfig(audio_bins=8, d_model=16, heads=2))
+    with torch.no_grad():
+        model.output.weight.zero_()
+        model.output.bias.zero_()
+        model.output.bias[100] = 100
+        model.output.bias[262] = 90
+    result = generate(model, torch.zeros(1, 10), torch.tensor([10]), [1], 2, mode='audio')
+    assert result == [1, 262, 262]
