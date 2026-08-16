@@ -84,3 +84,13 @@ def test_joint_loss_ignores_padding():
     labels = torch.tensor([[101, 260, -100]])
     loss = joint_loss(logits, labels, text_weight=1, audio_weight=2)
     assert float(loss) == pytest.approx(np.log(268))
+
+
+@pytest.mark.model
+def test_all_ignored_loss_rejected():
+    import torch
+
+    from speechloom.model import joint_loss
+
+    with pytest.raises(ValueError, match='no supervised'):
+        joint_loss(torch.zeros(1, 2, 268), torch.tensor([[-100, -100]]))
