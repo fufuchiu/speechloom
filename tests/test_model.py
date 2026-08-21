@@ -154,3 +154,19 @@ def test_invalid_attention_configuration():
         SpeechConfig(d_model=15, heads=3)
     with pytest.raises(ValueError):
         SpeechConfig(d_model=16, heads=3)
+
+
+@pytest.mark.model
+def test_corrupt_checkpoint_rejected():
+    import tempfile
+    from pathlib import Path
+
+    import torch
+
+    from speechloom.model import load_checkpoint
+
+    with tempfile.TemporaryDirectory() as d:
+        p = Path(d) / 'bad.pt'
+        torch.save({'format_version': 999}, p)
+        with pytest.raises(ValueError):
+            load_checkpoint(p)
