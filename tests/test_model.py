@@ -137,3 +137,10 @@ def test_decoder_padding_rejected_when_noncontiguous():
     model = SpeechModel(SpeechConfig(audio_bins=8, d_model=16, heads=2))
     with pytest.raises(ValueError, match='padding'):
         model(torch.zeros(1, 10), torch.tensor([10]), torch.tensor([[1, 0, 5]]))
+
+
+@pytest.mark.model
+def test_position_encoding_origin():
+    from speechloom.model import sinusoidal_positions
+
+    assert sinusoidal_positions(1, 4).tolist() == [[0, 1, 0, 1]]
