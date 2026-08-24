@@ -144,3 +144,13 @@ def test_position_encoding_origin():
     from speechloom.model import sinusoidal_positions
 
     assert sinusoidal_positions(1, 4).tolist() == [[0, 1, 0, 1]]
+
+
+@pytest.mark.model
+def test_invalid_attention_configuration():
+    from speechloom.model import SpeechConfig
+
+    with pytest.raises(ValueError):
+        SpeechConfig(d_model=15, heads=3)
+    with pytest.raises(ValueError):
+        SpeechConfig(d_model=16, heads=3)
