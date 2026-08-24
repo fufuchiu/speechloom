@@ -126,3 +126,14 @@ def test_generation_audio_allowlist():
         model.output.bias[262] = 90
     result = generate(model, torch.zeros(1, 10), torch.tensor([10]), [1], 2, mode='audio')
     assert result == [1, 262, 262]
+
+
+@pytest.mark.model
+def test_decoder_padding_rejected_when_noncontiguous():
+    import torch
+
+    from speechloom.model import SpeechConfig, SpeechModel
+
+    model = SpeechModel(SpeechConfig(audio_bins=8, d_model=16, heads=2))
+    with pytest.raises(ValueError, match='padding'):
+        model(torch.zeros(1, 10), torch.tensor([10]), torch.tensor([[1, 0, 5]]))
