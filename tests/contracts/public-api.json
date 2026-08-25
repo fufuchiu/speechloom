@@ -1,0 +1,158 @@
+{
+  "__init__.py": {
+    "__version__": "'0.1.0'"
+  },
+  "__main__.py": {},
+  "audio.py": {
+    "AudioFormat": {
+      "sample_rate": "int = 16000",
+      "channels": "int = 1",
+      "sample_width": "int = 2"
+    },
+    "pcm_encode": "samples -> bytes",
+    "pcm_decode": "payload: bytes -> np.ndarray",
+    "audio_to_base64": "samples -> str",
+    "audio_from_base64": "payload: str, max_bytes: int=3200000 -> np.ndarray",
+    "chunk_audio": "samples, chunk_size: int=320 -> list[np.ndarray]",
+    "pad_audio": "waveforms, multiple: int=1 -> tuple[np.ndarray, np.ndarray]",
+    "rms_energy": "samples -> float",
+    "crossfade": "left, right, overlap: int -> np.ndarray",
+    "samples_to_seconds": "count: int, sample_rate: int=16000 -> float",
+    "seconds_to_samples": "seconds: float, sample_rate: int=16000 -> int"
+  },
+  "batching.py": {
+    "padding_mask": "lengths, max_length: int | None=None -> np.ndarray",
+    "causal_mask": "length: int -> np.ndarray",
+    "shift_targets": "sequences, vocabulary_size: int, pad_id: int=0, ignore_index: int=-100 -> dict",
+    "loss_weights": "labels, audio_offset: int=260, text_weight: float=1, audio_weight: float=1 -> np.ndarray",
+    "token_budget_batches": "lengths, budget: int -> list[list[int]]",
+    "length_buckets": "lengths, boundaries=(128, 256, 512, 1024) -> dict[int, list[int]]"
+  },
+  "cli.py": {
+    "main": "argv=None -> int"
+  },
+  "codec.py": {
+    "mulaw_encode": "samples, bins: int=256 -> np.ndarray",
+    "mulaw_decode": "codes, bins: int=256 -> np.ndarray",
+    "nearest_codes": "vectors, codebook -> np.ndarray",
+    "fit_codebook": "vectors, size: int=16, iterations: int=20, seed: int=0 -> np.ndarray",
+    "residual_encode": "vectors, codebooks -> np.ndarray",
+    "residual_decode": "codes, codebooks -> np.ndarray",
+    "codebook_perplexity": "codes, size: int -> float"
+  },
+  "conversation.py": {
+    "Turn": {
+      "role": "str = ",
+      "text": "str = ''",
+      "audio": "str | None = None"
+    },
+    "validate_turns": "turns -> list[Turn]",
+    "load_conversations": "path: str | Path -> list[list[Turn]]",
+    "save_conversations": "path: str | Path, conversations -> None",
+    "response_example": "audio_path: str, text: str, codes, layout: TokenLayout=TokenLayout() -> dict",
+    "truncate_turns": "turns, max_turns: int -> list[Turn]",
+    "validate_example": "data: dict, vocabulary_size: int=516 -> dict"
+  },
+  "metrics.py": {
+    "percentile": "values, q: float=0.95 -> float",
+    "real_time_factor": "elapsed: float, audio_seconds: float -> float",
+    "first_token_latency": "start: float, first_token: float -> float",
+    "inter_token_gaps": "timestamps -> np.ndarray",
+    "waveform_snr": "reference, generated -> float",
+    "bootstrap_mean": "values, confidence: float=0.95, repetitions: int=1000, seed: int=0 -> tuple[float, float]",
+    "token_accuracy": "predicted, expected, ignore_index: int=-100 -> float",
+    "summarize_latency": "timestamps, start: float -> dict"
+  },
+  "model.py": {
+    "SpeechConfig": {
+      "audio_bins": "int = 256",
+      "d_model": "int = 32",
+      "heads": "int = 4",
+      "encoder_layers": "int = 1",
+      "decoder_layers": "int = 1",
+      "max_tokens": "int = 1024",
+      "max_audio_samples": "int = 32000",
+      "vocabulary_size": "self -> int"
+    },
+    "sinusoidal_positions": "length: int, width: int, device=None, dtype=None -> torch.Tensor",
+    "SpeechModel": {
+      "__init__": "self, config: SpeechConfig=SpeechConfig() -> ",
+      "encode": "self, audio: torch.Tensor, lengths: torch.Tensor -> tuple[torch.Tensor, torch.Tensor]",
+      "decode": "self, input_ids: torch.Tensor, memory: torch.Tensor, memory_mask: torch.Tensor -> torch.Tensor",
+      "forward": "self, audio: torch.Tensor, lengths: torch.Tensor, input_ids: torch.Tensor -> torch.Tensor"
+    },
+    "joint_loss": "logits: torch.Tensor, labels: torch.Tensor, audio_offset: int=260, text_weight: float=1.0, audio_weight: float=1.0 -> torch.Tensor",
+    "train_step": "model: SpeechModel, optimizer, audio, lengths, input_ids, labels, text_weight: float=1, audio_weight: float=1, max_grad_norm: float=1 -> float",
+    "generate": "model: SpeechModel, audio: torch.Tensor, lengths: torch.Tensor, prompt_ids, max_new_tokens: int=64, mode: str='mixed' -> list[int]",
+    "save_checkpoint": "path: str | Path, model: SpeechModel, step: int=0 -> None",
+    "load_checkpoint": "path: str | Path -> tuple[SpeechModel, int]"
+  },
+  "sampling.py": {
+    "checked_logits": "logits -> np.ndarray",
+    "softmax": "logits, temperature: float=1.0 -> np.ndarray",
+    "top_k": "logits, k: int -> np.ndarray",
+    "top_p": "logits, p: float=0.9 -> np.ndarray",
+    "repetition_penalty": "logits, previous, penalty: float=1.0 -> np.ndarray",
+    "sample_token": "logits, temperature: float=1, seed: int | None=None -> int",
+    "allowed_tokens": "logits, allowed -> np.ndarray"
+  },
+  "streaming.py": {
+    "StreamEvent": {
+      "sequence": "int = ",
+      "kind": "str = ",
+      "payload": "str = "
+    },
+    "EventQueue": {
+      "__init__": "self, capacity: int=32 -> ",
+      "push": "self, kind: str, payload: str='' -> StreamEvent",
+      "pop": "self -> StreamEvent | None",
+      "drain": "self -> list[StreamEvent]",
+      "cancel": "self -> StreamEvent",
+      "pending": "self -> int"
+    },
+    "UTF8Stream": {
+      "__init__": "self -> ",
+      "feed": "self, payload: bytes -> str",
+      "finish": "self -> str"
+    },
+    "AudioRing": {
+      "__init__": "self, capacity: int=16000, drop_oldest: bool=False -> ",
+      "append": "self, samples -> None",
+      "take": "self, count: int -> np.ndarray",
+      "size": "self -> int"
+    },
+    "PCMStream": {
+      "__init__": "self, frame_samples: int=320 -> ",
+      "feed": "self, payload: bytes -> list[np.ndarray]",
+      "finish": "self -> list[np.ndarray]"
+    },
+    "validate_events": "events -> list[StreamEvent]",
+    "encode_audio_event": "samples -> str",
+    "decode_audio_event": "payload: str -> np.ndarray"
+  },
+  "tokens.py": {
+    "TokenLayout": {
+      "audio_bins": "int = 256",
+      "codebooks": "int = 1",
+      "pad": "int = 0",
+      "bos": "int = 1",
+      "eos": "int = 2",
+      "separator": "int = 3",
+      "audio_offset": "self -> int",
+      "vocabulary_size": "self -> int"
+    },
+    "encode_text": "text: str, boundaries: bool=False -> list[int]",
+    "decode_text": "ids, errors: str='strict' -> str",
+    "encode_audio": "codes, layout: TokenLayout=TokenLayout(), codebook: int=0 -> list[int]",
+    "decode_audio": "ids, layout: TokenLayout=TokenLayout(), codebook: int=0 -> list[int]",
+    "modality": "token: int, layout: TokenLayout=TokenLayout() -> str",
+    "pack_response": "text: str, audio_codes, layout: TokenLayout=TokenLayout() -> list[int]",
+    "unpack_response": "ids, layout: TokenLayout=TokenLayout() -> tuple[str, list[int]]"
+  },
+  "validation.py": {
+    "integer": "value, minimum: int=0, name: str='value' -> int",
+    "real": "value, minimum: float | None=None, maximum: float | None=None -> float",
+    "vector": "values -> np.ndarray",
+    "token_ids": "values, vocabulary_size: int -> list[int]"
+  }
+}
