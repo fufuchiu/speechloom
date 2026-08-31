@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "speechloom"
-version = "0.1.0"
+version = "0.1.1"
 description = "端到端语音模型研究工具：音频编码、因果解码、联合训练与流式协议。"
 readme = "README.md"
 requires-python = ">=3.10"

@@ -233,3 +233,9 @@ def test_response_roundtrip():
     text, codes = m.unpack_response(m.pack_response('你好', [0, 128, 255]))
     assert text == '你好'
     assert codes == [0, 128, 255]
+
+
+def test_reserved_token_fields_require_integer_ids():
+    for values in [{'pad': 0.0}, {'bos': 1.0}, {'eos': 2.0}, {'separator': 3.0}]:
+        with pytest.raises(ValueError):
+            m.TokenLayout(**values)

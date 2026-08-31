@@ -168,3 +168,9 @@ def test_crossfade_reversal():
     a = np.array([1, 2, 3.0])
     c = np.array([4, 5, 6.0])
     assert m.crossfade(a, c, 2) == pytest.approx(m.crossfade(c[::-1], a[::-1], 2)[::-1])
+
+
+def test_audio_format_rejects_float_channels_and_sample_width():
+    for values in [{'channels': 1.0}, {'sample_width': 2.0}]:
+        with pytest.raises(ValueError):
+            m.AudioFormat(**values)

@@ -17,6 +17,8 @@ class AudioFormat:
 
     def __post_init__(self):
         integer(self.sample_rate, 1)
+        integer(self.channels, 1)
+        integer(self.sample_width, 1)
         if self.channels != 1 or isinstance(self.channels, bool):
             raise ValueError('only mono audio is supported')
         if self.sample_width != 2 or isinstance(self.sample_width, bool):
