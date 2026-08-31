@@ -58,6 +58,8 @@ class EventQueue:
     def cancel(self) -> StreamEvent:
         if self.state != 'open':
             raise ValueError('stream is no longer open')
+        if self._events:
+            self._next = self._events[0].sequence
         self._events.clear()
         return self.push('cancelled')
 
@@ -150,6 +152,8 @@ def validate_events(events) -> list[StreamEvent]:
     """Require contiguous sequence IDs and a single final terminal event."""
     values = list(events)
     for index, event in enumerate(values):
+        if not isinstance(event, StreamEvent):
+            raise ValueError('events must be StreamEvent instances')
         if event.sequence != index:
             raise ValueError('event sequence is not contiguous from zero')
         if event.kind in ('done', 'cancelled') and index != len(values) - 1:

@@ -1,158 +1,767 @@
 {
   "__init__.py": {
-    "__version__": "'0.1.0'"
+    "__version__": "'0.1.1'"
   },
   "__main__.py": {},
   "audio.py": {
     "AudioFormat": {
-      "sample_rate": "int = 16000",
-      "channels": "int = 1",
-      "sample_width": "int = 2"
+      "bases": [],
+      "decorators": [
+        "dataclass(frozen=True)"
+      ],
+      "fields": {
+        "sample_rate": {
+          "type": "int",
+          "default": "16000"
+        },
+        "channels": {
+          "type": "int",
+          "default": "1"
+        },
+        "sample_width": {
+          "type": "int",
+          "default": "2"
+        }
+      },
+      "methods": {},
+      "instance_fields": []
     },
-    "pcm_encode": "samples -> bytes",
-    "pcm_decode": "payload: bytes -> np.ndarray",
-    "audio_to_base64": "samples -> str",
-    "audio_from_base64": "payload: str, max_bytes: int=3200000 -> np.ndarray",
-    "chunk_audio": "samples, chunk_size: int=320 -> list[np.ndarray]",
-    "pad_audio": "waveforms, multiple: int=1 -> tuple[np.ndarray, np.ndarray]",
-    "rms_energy": "samples -> float",
-    "crossfade": "left, right, overlap: int -> np.ndarray",
-    "samples_to_seconds": "count: int, sample_rate: int=16000 -> float",
-    "seconds_to_samples": "seconds: float, sample_rate: int=16000 -> int"
+    "pcm_encode": {
+      "signature": "samples",
+      "returns": "bytes",
+      "decorators": [],
+      "async": false
+    },
+    "pcm_decode": {
+      "signature": "payload: bytes",
+      "returns": "np.ndarray",
+      "decorators": [],
+      "async": false
+    },
+    "audio_to_base64": {
+      "signature": "samples",
+      "returns": "str",
+      "decorators": [],
+      "async": false
+    },
+    "audio_from_base64": {
+      "signature": "payload: str, max_bytes: int=3200000",
+      "returns": "np.ndarray",
+      "decorators": [],
+      "async": false
+    },
+    "chunk_audio": {
+      "signature": "samples, chunk_size: int=320",
+      "returns": "list[np.ndarray]",
+      "decorators": [],
+      "async": false
+    },
+    "pad_audio": {
+      "signature": "waveforms, multiple: int=1",
+      "returns": "tuple[np.ndarray, np.ndarray]",
+      "decorators": [],
+      "async": false
+    },
+    "rms_energy": {
+      "signature": "samples",
+      "returns": "float",
+      "decorators": [],
+      "async": false
+    },
+    "crossfade": {
+      "signature": "left, right, overlap: int",
+      "returns": "np.ndarray",
+      "decorators": [],
+      "async": false
+    },
+    "samples_to_seconds": {
+      "signature": "count: int, sample_rate: int=16000",
+      "returns": "float",
+      "decorators": [],
+      "async": false
+    },
+    "seconds_to_samples": {
+      "signature": "seconds: float, sample_rate: int=16000",
+      "returns": "int",
+      "decorators": [],
+      "async": false
+    }
   },
   "batching.py": {
-    "padding_mask": "lengths, max_length: int | None=None -> np.ndarray",
-    "causal_mask": "length: int -> np.ndarray",
-    "shift_targets": "sequences, vocabulary_size: int, pad_id: int=0, ignore_index: int=-100 -> dict",
-    "loss_weights": "labels, audio_offset: int=260, text_weight: float=1, audio_weight: float=1 -> np.ndarray",
-    "token_budget_batches": "lengths, budget: int -> list[list[int]]",
-    "length_buckets": "lengths, boundaries=(128, 256, 512, 1024) -> dict[int, list[int]]"
+    "padding_mask": {
+      "signature": "lengths, max_length: int | None=None",
+      "returns": "np.ndarray",
+      "decorators": [],
+      "async": false
+    },
+    "causal_mask": {
+      "signature": "length: int",
+      "returns": "np.ndarray",
+      "decorators": [],
+      "async": false
+    },
+    "shift_targets": {
+      "signature": "sequences, vocabulary_size: int, pad_id: int=0, ignore_index: int=-100",
+      "returns": "dict",
+      "decorators": [],
+      "async": false
+    },
+    "loss_weights": {
+      "signature": "labels, audio_offset: int=260, text_weight: float=1, audio_weight: float=1",
+      "returns": "np.ndarray",
+      "decorators": [],
+      "async": false
+    },
+    "token_budget_batches": {
+      "signature": "lengths, budget: int",
+      "returns": "list[list[int]]",
+      "decorators": [],
+      "async": false
+    },
+    "length_buckets": {
+      "signature": "lengths, boundaries=(128, 256, 512, 1024)",
+      "returns": "dict[int, list[int]]",
+      "decorators": [],
+      "async": false
+    }
   },
   "cli.py": {
-    "main": "argv=None -> int"
+    "main": {
+      "signature": "argv=None",
+      "returns": "int",
+      "decorators": [],
+      "async": false
+    }
   },
   "codec.py": {
-    "mulaw_encode": "samples, bins: int=256 -> np.ndarray",
-    "mulaw_decode": "codes, bins: int=256 -> np.ndarray",
-    "nearest_codes": "vectors, codebook -> np.ndarray",
-    "fit_codebook": "vectors, size: int=16, iterations: int=20, seed: int=0 -> np.ndarray",
-    "residual_encode": "vectors, codebooks -> np.ndarray",
-    "residual_decode": "codes, codebooks -> np.ndarray",
-    "codebook_perplexity": "codes, size: int -> float"
+    "mulaw_encode": {
+      "signature": "samples, bins: int=256",
+      "returns": "np.ndarray",
+      "decorators": [],
+      "async": false
+    },
+    "mulaw_decode": {
+      "signature": "codes, bins: int=256",
+      "returns": "np.ndarray",
+      "decorators": [],
+      "async": false
+    },
+    "nearest_codes": {
+      "signature": "vectors, codebook",
+      "returns": "np.ndarray",
+      "decorators": [],
+      "async": false
+    },
+    "fit_codebook": {
+      "signature": "vectors, size: int=16, iterations: int=20, seed: int=0",
+      "returns": "np.ndarray",
+      "decorators": [],
+      "async": false
+    },
+    "residual_encode": {
+      "signature": "vectors, codebooks",
+      "returns": "np.ndarray",
+      "decorators": [],
+      "async": false
+    },
+    "residual_decode": {
+      "signature": "codes, codebooks",
+      "returns": "np.ndarray",
+      "decorators": [],
+      "async": false
+    },
+    "codebook_perplexity": {
+      "signature": "codes, size: int",
+      "returns": "float",
+      "decorators": [],
+      "async": false
+    }
   },
   "conversation.py": {
     "Turn": {
-      "role": "str = ",
-      "text": "str = ''",
-      "audio": "str | None = None"
+      "bases": [],
+      "decorators": [
+        "dataclass(frozen=True)"
+      ],
+      "fields": {
+        "role": {
+          "type": "str",
+          "default": null
+        },
+        "text": {
+          "type": "str",
+          "default": "''"
+        },
+        "audio": {
+          "type": "str | None",
+          "default": "None"
+        }
+      },
+      "methods": {},
+      "instance_fields": []
     },
-    "validate_turns": "turns -> list[Turn]",
-    "load_conversations": "path: str | Path -> list[list[Turn]]",
-    "save_conversations": "path: str | Path, conversations -> None",
-    "response_example": "audio_path: str, text: str, codes, layout: TokenLayout=TokenLayout() -> dict",
-    "truncate_turns": "turns, max_turns: int -> list[Turn]",
-    "validate_example": "data: dict, vocabulary_size: int=516 -> dict"
+    "validate_turns": {
+      "signature": "turns",
+      "returns": "list[Turn]",
+      "decorators": [],
+      "async": false
+    },
+    "load_conversations": {
+      "signature": "path: str | Path",
+      "returns": "list[list[Turn]]",
+      "decorators": [],
+      "async": false
+    },
+    "save_conversations": {
+      "signature": "path: str | Path, conversations",
+      "returns": "None",
+      "decorators": [],
+      "async": false
+    },
+    "response_example": {
+      "signature": "audio_path: str, text: str, codes, layout: TokenLayout=TokenLayout()",
+      "returns": "dict",
+      "decorators": [],
+      "async": false
+    },
+    "truncate_turns": {
+      "signature": "turns, max_turns: int",
+      "returns": "list[Turn]",
+      "decorators": [],
+      "async": false
+    },
+    "validate_example": {
+      "signature": "data: dict, vocabulary_size: int=516",
+      "returns": "dict",
+      "decorators": [],
+      "async": false
+    }
   },
   "metrics.py": {
-    "percentile": "values, q: float=0.95 -> float",
-    "real_time_factor": "elapsed: float, audio_seconds: float -> float",
-    "first_token_latency": "start: float, first_token: float -> float",
-    "inter_token_gaps": "timestamps -> np.ndarray",
-    "waveform_snr": "reference, generated -> float",
-    "bootstrap_mean": "values, confidence: float=0.95, repetitions: int=1000, seed: int=0 -> tuple[float, float]",
-    "token_accuracy": "predicted, expected, ignore_index: int=-100 -> float",
-    "summarize_latency": "timestamps, start: float -> dict"
+    "percentile": {
+      "signature": "values, q: float=0.95",
+      "returns": "float",
+      "decorators": [],
+      "async": false
+    },
+    "real_time_factor": {
+      "signature": "elapsed: float, audio_seconds: float",
+      "returns": "float",
+      "decorators": [],
+      "async": false
+    },
+    "first_token_latency": {
+      "signature": "start: float, first_token: float",
+      "returns": "float",
+      "decorators": [],
+      "async": false
+    },
+    "inter_token_gaps": {
+      "signature": "timestamps",
+      "returns": "np.ndarray",
+      "decorators": [],
+      "async": false
+    },
+    "waveform_snr": {
+      "signature": "reference, generated",
+      "returns": "float",
+      "decorators": [],
+      "async": false
+    },
+    "bootstrap_mean": {
+      "signature": "values, confidence: float=0.95, repetitions: int=1000, seed: int=0",
+      "returns": "tuple[float, float]",
+      "decorators": [],
+      "async": false
+    },
+    "token_accuracy": {
+      "signature": "predicted, expected, ignore_index: int=-100",
+      "returns": "float",
+      "decorators": [],
+      "async": false
+    },
+    "summarize_latency": {
+      "signature": "timestamps, start: float",
+      "returns": "dict",
+      "decorators": [],
+      "async": false
+    }
   },
   "model.py": {
     "SpeechConfig": {
-      "audio_bins": "int = 256",
-      "d_model": "int = 32",
-      "heads": "int = 4",
-      "encoder_layers": "int = 1",
-      "decoder_layers": "int = 1",
-      "max_tokens": "int = 1024",
-      "max_audio_samples": "int = 32000",
-      "vocabulary_size": "self -> int"
+      "bases": [],
+      "decorators": [
+        "dataclass(frozen=True)"
+      ],
+      "fields": {
+        "audio_bins": {
+          "type": "int",
+          "default": "256"
+        },
+        "d_model": {
+          "type": "int",
+          "default": "32"
+        },
+        "heads": {
+          "type": "int",
+          "default": "4"
+        },
+        "encoder_layers": {
+          "type": "int",
+          "default": "1"
+        },
+        "decoder_layers": {
+          "type": "int",
+          "default": "1"
+        },
+        "max_tokens": {
+          "type": "int",
+          "default": "1024"
+        },
+        "max_audio_samples": {
+          "type": "int",
+          "default": "32000"
+        }
+      },
+      "methods": {
+        "vocabulary_size": {
+          "signature": "self",
+          "returns": "int",
+          "decorators": [
+            "property"
+          ],
+          "async": false
+        }
+      },
+      "instance_fields": []
     },
-    "sinusoidal_positions": "length: int, width: int, device=None, dtype=None -> torch.Tensor",
+    "sinusoidal_positions": {
+      "signature": "length: int, width: int, device=None, dtype=None",
+      "returns": "torch.Tensor",
+      "decorators": [],
+      "async": false
+    },
     "SpeechModel": {
-      "__init__": "self, config: SpeechConfig=SpeechConfig() -> ",
-      "encode": "self, audio: torch.Tensor, lengths: torch.Tensor -> tuple[torch.Tensor, torch.Tensor]",
-      "decode": "self, input_ids: torch.Tensor, memory: torch.Tensor, memory_mask: torch.Tensor -> torch.Tensor",
-      "forward": "self, audio: torch.Tensor, lengths: torch.Tensor, input_ids: torch.Tensor -> torch.Tensor"
+      "bases": [
+        "nn.Module"
+      ],
+      "decorators": [],
+      "fields": {},
+      "methods": {
+        "__init__": {
+          "signature": "self, config: SpeechConfig=SpeechConfig()",
+          "returns": null,
+          "decorators": [],
+          "async": false
+        },
+        "encode": {
+          "signature": "self, audio: torch.Tensor, lengths: torch.Tensor",
+          "returns": "tuple[torch.Tensor, torch.Tensor]",
+          "decorators": [],
+          "async": false
+        },
+        "decode": {
+          "signature": "self, input_ids: torch.Tensor, memory: torch.Tensor, memory_mask: torch.Tensor",
+          "returns": "torch.Tensor",
+          "decorators": [],
+          "async": false
+        },
+        "forward": {
+          "signature": "self, audio: torch.Tensor, lengths: torch.Tensor, input_ids: torch.Tensor",
+          "returns": "torch.Tensor",
+          "decorators": [],
+          "async": false
+        }
+      },
+      "instance_fields": [
+        "config",
+        "decoder",
+        "embedding",
+        "encoder",
+        "frontend",
+        "output"
+      ]
     },
-    "joint_loss": "logits: torch.Tensor, labels: torch.Tensor, audio_offset: int=260, text_weight: float=1.0, audio_weight: float=1.0 -> torch.Tensor",
-    "train_step": "model: SpeechModel, optimizer, audio, lengths, input_ids, labels, text_weight: float=1, audio_weight: float=1, max_grad_norm: float=1 -> float",
-    "generate": "model: SpeechModel, audio: torch.Tensor, lengths: torch.Tensor, prompt_ids, max_new_tokens: int=64, mode: str='mixed' -> list[int]",
-    "save_checkpoint": "path: str | Path, model: SpeechModel, step: int=0 -> None",
-    "load_checkpoint": "path: str | Path -> tuple[SpeechModel, int]"
+    "joint_loss": {
+      "signature": "logits: torch.Tensor, labels: torch.Tensor, audio_offset: int=260, text_weight: float=1.0, audio_weight: float=1.0",
+      "returns": "torch.Tensor",
+      "decorators": [],
+      "async": false
+    },
+    "train_step": {
+      "signature": "model: SpeechModel, optimizer, audio, lengths, input_ids, labels, text_weight: float=1, audio_weight: float=1, max_grad_norm: float=1",
+      "returns": "float",
+      "decorators": [],
+      "async": false
+    },
+    "generate": {
+      "signature": "model: SpeechModel, audio: torch.Tensor, lengths: torch.Tensor, prompt_ids, max_new_tokens: int=64, mode: str='mixed'",
+      "returns": "list[int]",
+      "decorators": [],
+      "async": false
+    },
+    "save_checkpoint": {
+      "signature": "path: str | Path, model: SpeechModel, step: int=0",
+      "returns": "None",
+      "decorators": [],
+      "async": false
+    },
+    "load_checkpoint": {
+      "signature": "path: str | Path",
+      "returns": "tuple[SpeechModel, int]",
+      "decorators": [],
+      "async": false
+    }
   },
   "sampling.py": {
-    "checked_logits": "logits -> np.ndarray",
-    "softmax": "logits, temperature: float=1.0 -> np.ndarray",
-    "top_k": "logits, k: int -> np.ndarray",
-    "top_p": "logits, p: float=0.9 -> np.ndarray",
-    "repetition_penalty": "logits, previous, penalty: float=1.0 -> np.ndarray",
-    "sample_token": "logits, temperature: float=1, seed: int | None=None -> int",
-    "allowed_tokens": "logits, allowed -> np.ndarray"
+    "checked_logits": {
+      "signature": "logits",
+      "returns": "np.ndarray",
+      "decorators": [],
+      "async": false
+    },
+    "softmax": {
+      "signature": "logits, temperature: float=1.0",
+      "returns": "np.ndarray",
+      "decorators": [],
+      "async": false
+    },
+    "top_k": {
+      "signature": "logits, k: int",
+      "returns": "np.ndarray",
+      "decorators": [],
+      "async": false
+    },
+    "top_p": {
+      "signature": "logits, p: float=0.9",
+      "returns": "np.ndarray",
+      "decorators": [],
+      "async": false
+    },
+    "repetition_penalty": {
+      "signature": "logits, previous, penalty: float=1.0",
+      "returns": "np.ndarray",
+      "decorators": [],
+      "async": false
+    },
+    "sample_token": {
+      "signature": "logits, temperature: float=1, seed: int | None=None",
+      "returns": "int",
+      "decorators": [],
+      "async": false
+    },
+    "allowed_tokens": {
+      "signature": "logits, allowed",
+      "returns": "np.ndarray",
+      "decorators": [],
+      "async": false
+    }
   },
   "streaming.py": {
     "StreamEvent": {
-      "sequence": "int = ",
-      "kind": "str = ",
-      "payload": "str = "
+      "bases": [],
+      "decorators": [
+        "dataclass(frozen=True)"
+      ],
+      "fields": {
+        "sequence": {
+          "type": "int",
+          "default": null
+        },
+        "kind": {
+          "type": "str",
+          "default": null
+        },
+        "payload": {
+          "type": "str",
+          "default": null
+        }
+      },
+      "methods": {},
+      "instance_fields": []
     },
     "EventQueue": {
-      "__init__": "self, capacity: int=32 -> ",
-      "push": "self, kind: str, payload: str='' -> StreamEvent",
-      "pop": "self -> StreamEvent | None",
-      "drain": "self -> list[StreamEvent]",
-      "cancel": "self -> StreamEvent",
-      "pending": "self -> int"
+      "bases": [],
+      "decorators": [],
+      "fields": {},
+      "methods": {
+        "__init__": {
+          "signature": "self, capacity: int=32",
+          "returns": null,
+          "decorators": [],
+          "async": false
+        },
+        "push": {
+          "signature": "self, kind: str, payload: str=''",
+          "returns": "StreamEvent",
+          "decorators": [],
+          "async": false
+        },
+        "pop": {
+          "signature": "self",
+          "returns": "StreamEvent | None",
+          "decorators": [],
+          "async": false
+        },
+        "drain": {
+          "signature": "self",
+          "returns": "list[StreamEvent]",
+          "decorators": [],
+          "async": false
+        },
+        "cancel": {
+          "signature": "self",
+          "returns": "StreamEvent",
+          "decorators": [],
+          "async": false
+        },
+        "pending": {
+          "signature": "self",
+          "returns": "int",
+          "decorators": [
+            "property"
+          ],
+          "async": false
+        }
+      },
+      "instance_fields": [
+        "capacity",
+        "state"
+      ]
     },
     "UTF8Stream": {
-      "__init__": "self -> ",
-      "feed": "self, payload: bytes -> str",
-      "finish": "self -> str"
+      "bases": [],
+      "decorators": [],
+      "fields": {},
+      "methods": {
+        "__init__": {
+          "signature": "self",
+          "returns": null,
+          "decorators": [],
+          "async": false
+        },
+        "feed": {
+          "signature": "self, payload: bytes",
+          "returns": "str",
+          "decorators": [],
+          "async": false
+        },
+        "finish": {
+          "signature": "self",
+          "returns": "str",
+          "decorators": [],
+          "async": false
+        }
+      },
+      "instance_fields": [
+        "closed"
+      ]
     },
     "AudioRing": {
-      "__init__": "self, capacity: int=16000, drop_oldest: bool=False -> ",
-      "append": "self, samples -> None",
-      "take": "self, count: int -> np.ndarray",
-      "size": "self -> int"
+      "bases": [],
+      "decorators": [],
+      "fields": {},
+      "methods": {
+        "__init__": {
+          "signature": "self, capacity: int=16000, drop_oldest: bool=False",
+          "returns": null,
+          "decorators": [],
+          "async": false
+        },
+        "append": {
+          "signature": "self, samples",
+          "returns": "None",
+          "decorators": [],
+          "async": false
+        },
+        "take": {
+          "signature": "self, count: int",
+          "returns": "np.ndarray",
+          "decorators": [],
+          "async": false
+        },
+        "size": {
+          "signature": "self",
+          "returns": "int",
+          "decorators": [
+            "property"
+          ],
+          "async": false
+        }
+      },
+      "instance_fields": [
+        "capacity",
+        "drop_oldest",
+        "dropped"
+      ]
     },
     "PCMStream": {
-      "__init__": "self, frame_samples: int=320 -> ",
-      "feed": "self, payload: bytes -> list[np.ndarray]",
-      "finish": "self -> list[np.ndarray]"
+      "bases": [],
+      "decorators": [],
+      "fields": {},
+      "methods": {
+        "__init__": {
+          "signature": "self, frame_samples: int=320",
+          "returns": null,
+          "decorators": [],
+          "async": false
+        },
+        "feed": {
+          "signature": "self, payload: bytes",
+          "returns": "list[np.ndarray]",
+          "decorators": [],
+          "async": false
+        },
+        "finish": {
+          "signature": "self",
+          "returns": "list[np.ndarray]",
+          "decorators": [],
+          "async": false
+        }
+      },
+      "instance_fields": [
+        "closed",
+        "frame_bytes"
+      ]
     },
-    "validate_events": "events -> list[StreamEvent]",
-    "encode_audio_event": "samples -> str",
-    "decode_audio_event": "payload: str -> np.ndarray"
+    "validate_events": {
+      "signature": "events",
+      "returns": "list[StreamEvent]",
+      "decorators": [],
+      "async": false
+    },
+    "encode_audio_event": {
+      "signature": "samples",
+      "returns": "str",
+      "decorators": [],
+      "async": false
+    },
+    "decode_audio_event": {
+      "signature": "payload: str",
+      "returns": "np.ndarray",
+      "decorators": [],
+      "async": false
+    }
   },
   "tokens.py": {
     "TokenLayout": {
-      "audio_bins": "int = 256",
-      "codebooks": "int = 1",
-      "pad": "int = 0",
-      "bos": "int = 1",
-      "eos": "int = 2",
-      "separator": "int = 3",
-      "audio_offset": "self -> int",
-      "vocabulary_size": "self -> int"
+      "bases": [],
+      "decorators": [
+        "dataclass(frozen=True)"
+      ],
+      "fields": {
+        "audio_bins": {
+          "type": "int",
+          "default": "256"
+        },
+        "codebooks": {
+          "type": "int",
+          "default": "1"
+        },
+        "pad": {
+          "type": "int",
+          "default": "0"
+        },
+        "bos": {
+          "type": "int",
+          "default": "1"
+        },
+        "eos": {
+          "type": "int",
+          "default": "2"
+        },
+        "separator": {
+          "type": "int",
+          "default": "3"
+        }
+      },
+      "methods": {
+        "audio_offset": {
+          "signature": "self",
+          "returns": "int",
+          "decorators": [
+            "property"
+          ],
+          "async": false
+        },
+        "vocabulary_size": {
+          "signature": "self",
+          "returns": "int",
+          "decorators": [
+            "property"
+          ],
+          "async": false
+        }
+      },
+      "instance_fields": []
     },
-    "encode_text": "text: str, boundaries: bool=False -> list[int]",
-    "decode_text": "ids, errors: str='strict' -> str",
-    "encode_audio": "codes, layout: TokenLayout=TokenLayout(), codebook: int=0 -> list[int]",
-    "decode_audio": "ids, layout: TokenLayout=TokenLayout(), codebook: int=0 -> list[int]",
-    "modality": "token: int, layout: TokenLayout=TokenLayout() -> str",
-    "pack_response": "text: str, audio_codes, layout: TokenLayout=TokenLayout() -> list[int]",
-    "unpack_response": "ids, layout: TokenLayout=TokenLayout() -> tuple[str, list[int]]"
+    "encode_text": {
+      "signature": "text: str, boundaries: bool=False",
+      "returns": "list[int]",
+      "decorators": [],
+      "async": false
+    },
+    "decode_text": {
+      "signature": "ids, errors: str='strict'",
+      "returns": "str",
+      "decorators": [],
+      "async": false
+    },
+    "encode_audio": {
+      "signature": "codes, layout: TokenLayout=TokenLayout(), codebook: int=0",
+      "returns": "list[int]",
+      "decorators": [],
+      "async": false
+    },
+    "decode_audio": {
+      "signature": "ids, layout: TokenLayout=TokenLayout(), codebook: int=0",
+      "returns": "list[int]",
+      "decorators": [],
+      "async": false
+    },
+    "modality": {
+      "signature": "token: int, layout: TokenLayout=TokenLayout()",
+      "returns": "str",
+      "decorators": [],
+      "async": false
+    },
+    "pack_response": {
+      "signature": "text: str, audio_codes, layout: TokenLayout=TokenLayout()",
+      "returns": "list[int]",
+      "decorators": [],
+      "async": false
+    },
+    "unpack_response": {
+      "signature": "ids, layout: TokenLayout=TokenLayout()",
+      "returns": "tuple[str, list[int]]",
+      "decorators": [],
+      "async": false
+    }
   },
   "validation.py": {
-    "integer": "value, minimum: int=0, name: str='value' -> int",
-    "real": "value, minimum: float | None=None, maximum: float | None=None -> float",
-    "vector": "values -> np.ndarray",
-    "token_ids": "values, vocabulary_size: int -> list[int]"
+    "integer": {
+      "signature": "value, minimum: int=0, name: str='value'",
+      "returns": "int",
+      "decorators": [],
+      "async": false
+    },
+    "real": {
+      "signature": "value, minimum: float | None=None, maximum: float | None=None",
+      "returns": "float",
+      "decorators": [],
+      "async": false
+    },
+    "vector": {
+      "signature": "values",
+      "returns": "np.ndarray",
+      "decorators": [],
+      "async": false
+    },
+    "token_ids": {
+      "signature": "values, vocabulary_size: int",
+      "returns": "list[int]",
+      "decorators": [],
+      "async": false
+    }
   }
 }

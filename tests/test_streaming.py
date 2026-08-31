@@ -212,3 +212,26 @@ def test_event_after_done():
 
 def test_hex_roundtrip():
     assert m.decode_audio_event(m.encode_audio_event([-1, 0, 0.5])).tolist() == [-1, 0, 0.5]
+
+
+def test_cancel_preserves_sequence_after_discarding_pending_events():
+    queue = m.EventQueue(4)
+    queue.push('text', 'delivered')
+    delivered = [queue.pop()]
+    queue.push('audio', '0000')
+    queue.push('text', 'pending')
+    queue.cancel()
+    result = m.validate_events(delivered + queue.drain())
+    assert [(event.sequence, event.kind) for event in result] == [(0, 'text'), (1, 'cancelled')]
+
+
+def test_cancel_before_delivery_starts_at_zero():
+    queue = m.EventQueue()
+    queue.push('text', 'pending')
+    queue.cancel()
+    assert m.validate_events(queue.drain())[0].sequence == 0
+
+
+def test_event_validator_rejects_untyped_records():
+    with pytest.raises(ValueError):
+        m.validate_events([{'sequence': 0}])

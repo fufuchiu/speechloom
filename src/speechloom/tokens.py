@@ -17,6 +17,8 @@ class TokenLayout:
     def __post_init__(self):
         integer(self.audio_bins, 2)
         integer(self.codebooks, 1)
+        for value in (self.pad, self.bos, self.eos, self.separator):
+            integer(value)
         if (self.pad, self.bos, self.eos, self.separator) != (0, 1, 2, 3) or any(
             isinstance(v, bool) for v in (self.pad, self.bos, self.eos, self.separator)
         ):
