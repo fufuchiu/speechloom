@@ -14,7 +14,7 @@ dependencies = ["numpy>=1.26,<3"]
 
 [project.optional-dependencies]
 model = ["torch>=2.5,<3"]
-dev = ["build>=1.2", "hatchling>=1.26", "pytest>=8,<10", "pytest-cov>=5", "ruff>=0.11"]
+dev = ["build>=1.2", "hatchling>=1.26", "pytest>=8,<10", "pytest-cov>=7.1.0", "ruff>=0.11"]
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/speechloom"]
