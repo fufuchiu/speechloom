@@ -2,6 +2,7 @@
 
 import math
 from dataclasses import asdict, dataclass
+from typing import Literal
 from pathlib import Path
 
 import torch
@@ -230,7 +231,7 @@ def generate(
     lengths: torch.Tensor,
     prompt_ids,
     max_new_tokens: int = 64,
-    mode: str = 'mixed',
+    mode: Literal['text', 'audio', 'mixed'] = 'mixed',
 ) -> list[int]:
     """Greedy batch-one generation with reused audio memory and modality limits."""
     from .validation import token_ids
