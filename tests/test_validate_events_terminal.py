@@ -27,7 +27,9 @@ def test_valid_cancelled_terminal():
 
 def test_multiple_non_terminal_rejected():
     with pytest.raises(ValueError, match='terminal event'):
-        m.validate_events([
-            m.StreamEvent(0, 'text', 'a'),
-            m.StreamEvent(1, 'text', 'b'),
-        ])
+        m.validate_events(
+            [
+                m.StreamEvent(0, 'text', 'a'),
+                m.StreamEvent(1, 'text', 'b'),
+            ]
+        )
