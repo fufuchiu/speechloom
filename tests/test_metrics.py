@@ -145,3 +145,44 @@ def test_latency_summary():
     assert s['first_token_seconds'] == 0.5
     assert s['mean_gap_seconds'] == pytest.approx(0.15)
     assert s['p95_gap_seconds'] == pytest.approx(0.195)
+
+
+def test_gap_single_timestamp():
+    """A single timestamp produces an empty gap array."""
+    assert m.inter_token_gaps([5]).tolist() == []
+
+
+def test_latency_summary_single_token():
+    """One timestamp gives zero mean and p95 gaps."""
+    s = m.summarize_latency([2.0], 1.0)
+    assert s['first_token_seconds'] == 1.0
+    assert s['tokens'] == 1
+    assert s['mean_gap_seconds'] == 0.0
+    assert s['p95_gap_seconds'] == 0.0
+
+
+def test_accuracy_all_correct():
+    """All matching tokens yields accuracy 1.0."""
+    assert m.token_accuracy([1, 2, 3], [1, 2, 3]) == 1.0
+
+
+def test_accuracy_no_ignore():
+    """Without ignore_index every position counts."""
+    assert m.token_accuracy([1, 2, 3], [1, 0, 3]) == pytest.approx(2 / 3)
+
+
+def test_first_token_at_start():
+    """Zero latency when the first token arrives immediately."""
+    assert m.first_token_latency(3.5, 3.5) == 0.0
+
+
+def test_percentile_single():
+    """A single observation returns that value for any quantile."""
+    assert m.percentile([7], 0.5) == 7
+    assert m.percentile([7], 0.0) == 7
+    assert m.percentile([7], 1.0) == 7
+
+
+def test_snr_negative():
+    """A noisier signal than reference yields negative SNR."""
+    assert m.waveform_snr([1, 1], [3, 3]) < 0
