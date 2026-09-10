@@ -126,3 +126,37 @@ def test_mask_without_mutation():
     x = np.array([1.0, 2.0, 3.0])
     m.top_k(x, 1)
     assert x.tolist() == [1, 2, 3]
+
+
+def test_top_k_full_vocabulary():
+    """Keeping all logits returns them unchanged."""
+    x = np.array([1.0, 2.0, 3.0])
+    result = m.top_k(x, 3)
+    assert np.isfinite(result).all()
+    assert result.tolist() == [1.0, 2.0, 3.0]
+
+
+def test_repetition_no_previous():
+    """Empty previous tokens leaves logits unchanged."""
+    x = np.array([1.0, 2.0, 3.0])
+    result = m.repetition_penalty(x, [], 2.0)
+    assert result.tolist() == [1.0, 2.0, 3.0]
+
+
+def test_repetition_unit_penalty():
+    """Penalty of 1.0 is a no-op regardless of previous tokens."""
+    x = np.array([2.0, -2.0, 0.0])
+    result = m.repetition_penalty(x, [0, 1], 1.0)
+    assert result.tolist() == [2.0, -2.0, 0.0]
+
+
+def test_top_p_tiny():
+    """Very small p retains at least the single most likely token."""
+    result = m.top_p([0.1, 0.3, 0.6], 0.01)
+    assert np.flatnonzero(np.isfinite(result)).tolist() == [2]
+
+
+def test_sample_token_greedy_argmax():
+    """Temperature zero returns argmax deterministically."""
+    assert m.sample_token([1, 3, 2], 0) == 1
+    assert m.sample_token([3, 1, 2], 0) == 0
