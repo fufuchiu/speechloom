@@ -151,6 +151,8 @@ class PCMStream:
 def validate_events(events) -> list[StreamEvent]:
     """Require contiguous sequence IDs and a single final terminal event."""
     values = list(events)
+    if not values:
+        raise ValueError('events cannot be empty')
     for index, event in enumerate(values):
         if not isinstance(event, StreamEvent):
             raise ValueError('events must be StreamEvent instances')
@@ -158,6 +160,8 @@ def validate_events(events) -> list[StreamEvent]:
             raise ValueError('event sequence is not contiguous from zero')
         if event.kind in ('done', 'cancelled') and index != len(values) - 1:
             raise ValueError('events follow a terminal event')
+    if values[-1].kind not in ('done', 'cancelled'):
+        raise ValueError('events must end with a terminal event')
     return values
 
 
