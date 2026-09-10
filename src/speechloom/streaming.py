@@ -67,6 +67,9 @@ class EventQueue:
     def pending(self) -> int:
         return len(self._events)
 
+    def __len__(self) -> int:
+        return len(self._events)
+
 
 class UTF8Stream:
     """Decode tokens incrementally without emitting partial multibyte text."""
@@ -116,6 +119,9 @@ class AudioRing:
 
     @property
     def size(self) -> int:
+        return len(self._samples)
+
+    def __len__(self) -> int:
         return len(self._samples)
 
 
