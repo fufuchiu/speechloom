@@ -68,6 +68,14 @@ def residual_encode(vectors, codebooks) -> np.ndarray:
     books = list(codebooks)
     if not books:
         raise ValueError('at least one codebook is required')
+    width = None
+    for book in books:
+        book = np.asarray(book, dtype=float)
+        if book.ndim != 2 or not all(book.shape):
+            raise ValueError('invalid codebook')
+        if width is not None and book.shape[1] != width:
+            raise ValueError('codebook vector dimensions differ')
+        width = book.shape[1]
     columns = []
     for book in books:
         book = np.asarray(book, dtype=float)
