@@ -239,3 +239,47 @@ def test_reserved_token_fields_require_integer_ids():
     for values in [{'pad': 0.0}, {'bos': 1.0}, {'eos': 2.0}, {'separator': 3.0}]:
         with pytest.raises(ValueError):
             m.TokenLayout(**values)
+
+
+def test_encode_text_no_boundaries():
+    '''encode_text without boundaries omits BOS and EOS.'''
+    ids = m.encode_text('AB', False)
+    assert ids == [69, 70]  # ord('A')+4=69, ord('B')+4=70
+
+
+def test_encode_text_byte_offset():
+    '''Each UTF-8 byte is shifted by +4.'''
+    ids = m.encode_text(chr(0), False)
+    assert ids == [4]
+
+
+def test_decode_text_replace():
+    '''Replace policy substitutes malformed bytes with replacement character.'''
+    result = m.decode_text([259], errors='replace')
+    assert result == chr(0xFFFD)
+
+
+def test_decode_text_ignore():
+    '''Ignore policy silently drops malformed bytes.'''
+    result = m.decode_text([259], errors='ignore')
+    assert result == ''
+
+
+def test_modality_first_text():
+    '''Token 4 is the first text token.'''
+    assert m.modality(4) == 'text'
+
+
+def test_modality_last_text():
+    '''Token 259 is the last text token before audio.'''
+    assert m.modality(259) == 'text'
+
+
+def test_modality_first_audio():
+    '''Token 260 is the first audio token.'''
+    assert m.modality(260) == 'audio'
+
+
+def test_encode_empty_no_boundaries():
+    '''Empty text without boundaries yields an empty list.'''
+    assert m.encode_text('', False) == []
