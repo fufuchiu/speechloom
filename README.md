@@ -2,7 +2,7 @@
 
 端到端语音模型研究工具：音频编码、因果解码、联合训练与流式协议。
 
-Chen Yuxuan · 广州大学（Guangzhou University）。
+Chen Yuxuan
 
 > 历史说明：本仓库由经过验证的补丁序列重建；2025 年至 2026 年 8 月的 Git 时间戳用于展示项目演进，不代表代码实际开发日期。
 
@@ -17,7 +17,7 @@ pip install -e '.[dev]'
 ```
 
 ```bash
-python -m speechloom tokenize '广州大学' --audio-codes 0,128,255
+python -m speechloom tokenize '大学' --audio-codes 0,128,255
 python examples/codec_roundtrip.py
 python examples/stream_text.py
 ```
