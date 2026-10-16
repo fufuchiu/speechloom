@@ -174,3 +174,52 @@ def test_audio_format_rejects_float_channels_and_sample_width():
     for values in [{'channels': 1.0}, {'sample_width': 2.0}]:
         with pytest.raises(ValueError):
             m.AudioFormat(**values)
+
+
+def test_pad_single_waveform():
+    '''A single waveform is returned unpadded with its exact length.'''
+    x, n = m.pad_audio([[1, 2, 3]])
+    assert x.tolist() == [[1, 2, 3]]
+    assert n.tolist() == [3]
+
+
+def test_pad_identical_lengths():
+    '''Waveforms of equal length need no padding.'''
+    x, n = m.pad_audio([[1, 2], [3, 4]])
+    assert x.tolist() == [[1, 2], [3, 4]]
+    assert n.tolist() == [2, 2]
+
+
+def test_pad_round_up_multiple():
+    '''Width rounds up to the next multiple.'''
+    x, n = m.pad_audio([[1, 2, 3]], multiple=4)
+    assert x.shape == (1, 4)
+    assert x[0].tolist() == [1, 2, 3, 0]
+
+
+def test_chunk_exact():
+    '''chunk_size equal to sample count yields one chunk.'''
+    chunks = m.chunk_audio([1, 2, 3], 3)
+    assert len(chunks) == 1
+    assert chunks[0].tolist() == [1, 2, 3]
+
+
+def test_chunk_larger_than_input():
+    '''chunk_size larger than sample count yields one short chunk.'''
+    chunks = m.chunk_audio([1, 2], 10)
+    assert len(chunks) == 1
+    assert chunks[0].tolist() == [1, 2]
+
+
+def test_pcm_boundary_values():
+    '''Boundary samples -1 and +1 encode to min and max int16.'''
+    payload = m.pcm_encode([-1, 1])
+    assert m.pcm_decode(payload).tolist() == [-1, 32767 / 32768]
+
+
+def test_base64_exact_limit():
+    '''A payload exactly at the limit decodes successfully.'''
+    raw = b'\x00\x00'  # 2 bytes
+    encoded = __import__('base64').b64encode(raw).decode('ascii')
+    result = m.audio_from_base64(encoded, max_bytes=2)
+    assert result.tolist() == [0.0]
