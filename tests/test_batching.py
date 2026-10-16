@@ -129,3 +129,47 @@ def test_padded_budget_invariant():
 def test_padding_inverse_lengths():
     lengths = [1, 3, 5]
     assert (~m.padding_mask(lengths)).sum(1).tolist() == lengths
+
+
+
+def test_loss_weights_all_text():
+    """Labels below audio_offset all receive text_weight."""
+    labels = np.array([4, 100, 259])
+    assert m.loss_weights(labels, text_weight=3, audio_weight=5).tolist() == [3, 3, 3]
+
+
+def test_loss_weights_all_audio():
+    """Labels at or above audio_offset all receive audio_weight."""
+    labels = np.array([260, 300, 515])
+    assert m.loss_weights(labels, text_weight=3, audio_weight=5).tolist() == [5, 5, 5]
+
+
+def test_loss_weights_all_ignored():
+    """Negative labels all receive weight zero."""
+    labels = np.array([-100, -1, -50])
+    assert m.loss_weights(labels).tolist() == [0, 0, 0]
+
+
+def test_loss_weights_zero_text():
+    """Zero text_weight supervises audio only."""
+    labels = np.array([4, 260, -100])
+    assert m.loss_weights(labels, text_weight=0, audio_weight=1).tolist() == [0, 1, 0]
+
+
+def test_loss_weights_zero_audio():
+    """Zero audio_weight supervises text only."""
+    labels = np.array([4, 260, -100])
+    assert m.loss_weights(labels, text_weight=1, audio_weight=0).tolist() == [1, 0, 0]
+
+
+def test_loss_weights_custom_offset():
+    """Non-default audio_offset shifts the text/audio boundary."""
+    labels = np.array([4, 10, 20])
+    assert m.loss_weights(labels, audio_offset=10, text_weight=1, audio_weight=2).tolist() == [1, 2, 2]
+
+
+def test_loss_weights_2d():
+    """Two-dimensional label arrays are handled correctly."""
+    labels = np.array([[4, 260], [-100, 300]])
+    result = m.loss_weights(labels, text_weight=1, audio_weight=2)
+    assert result.tolist() == [[1, 2], [0, 2]]
