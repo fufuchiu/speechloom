@@ -173,3 +173,48 @@ def test_load_bad_sequence():
 
 def test_supervised_response():
     assert m.response_example('a.wav', 'a', [0])['target_ids'] == [1, 101, 3, 260, 2]
+
+
+def test_save_invalid_turns_rejected():
+    '''save_conversations raises before writing invalid data.'''
+    import tempfile
+    from pathlib import Path
+
+    with tempfile.TemporaryDirectory() as d:
+        p = Path(d) / 'turns.jsonl'
+        with pytest.raises(ValueError):
+            m.save_conversations(p, [[m.Turn('user', 'u'), m.Turn('user', 'v')]])
+        assert not p.exists()
+
+
+def test_validate_example_small_vocab():
+    '''validate_example with custom vocabulary_size rejects out-of-range IDs.'''
+    with pytest.raises(ValueError):
+        m.validate_example({
+            'audio': 'a.wav',
+            'target_ids': [1, 100, 2],
+        }, vocabulary_size=50)
+
+
+def test_turn_text_and_audio():
+    '''A user turn can carry both text and audio.'''
+    turn = m.Turn('user', 'listen', audio='a.wav')
+    assert turn.text == 'listen'
+    assert turn.audio == 'a.wav'
+
+
+def test_load_empty_file():
+    '''An empty JSONL file yields an empty conversation list.'''
+    import tempfile
+    from pathlib import Path
+
+    with tempfile.TemporaryDirectory() as d:
+        p = Path(d) / 'turns.jsonl'
+        p.write_text('')
+        assert m.load_conversations(p) == []
+
+
+def test_single_user_turn():
+    '''A single user turn is a valid conversation prefix.'''
+    turns = m.validate_turns([m.Turn('user', 'hello')])
+    assert len(turns) == 1
